@@ -1,0 +1,26 @@
+.jets-btn {
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  font-family: inherit;
+  font-weight: 600;
+  line-height: 1.5;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: none;
+  border-radius: 2px;
+  border-width: 0px;
+  border-style: solid;
+  padding: 9.5px 18px;
+  height: 40px;
+  border: 1px solid #ccc;
+  color: #fff;
+  background-color: rgb(56, 84, 245);
+}
+
+.jets-btn:disabled {
+  background-color: #ccc;
+  color: #000;
+  cursor: not-allowed;
+}

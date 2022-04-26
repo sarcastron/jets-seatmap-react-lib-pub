@@ -1,0 +1,38 @@
+.jets-demo {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+}
+
+.jets-demo > div {
+  height: 100%;
+}
+
+.jets-demo--seat-map > div {
+  height: 100%;
+}
+
+.jets-demo--controllers {
+  padding-top: 60px;
+  margin-right: 50px;
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+}
+
+.jets-demo--controller {
+  display: flex;
+  width: 100%;
+  height: 250px;
+  margin-bottom: 10px;
+}
+
+.jets-demo--controller > textarea {
+  width: 75%;
+  resize: none;
+}
+
+.jets-demo--btn {
+  width: 25%;
+  height: 100%;
+}

@@ -1,0 +1,87 @@
+.jets-tooltip {
+  z-index: 200;
+  box-shadow: rgb(192 202 213) 0px 0px 0px 1px, rgb(0 0 0 / 8%) 0px 0px 4px 0px, rgb(0 0 0 / 8%) 0px 8px 8px 0px,
+    rgb(0 0 0 / 8%) 0px 16px 16px 0px;
+  font-size: 12px;
+  box-sizing: border-box;
+  max-width: 100%;
+  border-radius: 2px;
+  background: rgb(255, 255, 255);
+  outline: 0px;
+  position: absolute;
+}
+
+.jets-tooltip--content {
+  padding: 16px;
+}
+
+.jets-tooltip--header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.jets-tooltip--features > ul {
+  width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.jets-tooltip--feature img {
+  width: 8px;
+  height: 8px;
+}
+
+.jets-tooltip--feature > span {
+  display: block;
+  margin-right: 5px;
+}
+
+.jets-tooltip--features > ul > li {
+  color: #4f6f8f;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 0.6rem;
+  line-height: 1.4;
+  font-weight: bold;
+}
+
+.jets-tooltip--btns-block {
+  width: 100%;
+  display: flex;
+}
+
+.jets-tooltip--btn {
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  font-family: inherit;
+  font-weight: 600;
+  line-height: 1.5;
+  cursor: pointer;
+  width: 50%;
+  font-size: 14px;
+  text-decoration: none;
+  border-radius: 2px;
+  border-width: 0px;
+  border-style: solid;
+  padding: 9.5px 18px;
+}
+
+.jets-cancel-btn {
+  background-color: rgb(237, 240, 243);
+  color: rgb(0, 24, 51);
+}
+
+.jets-select-btn {
+  background-color: rgb(0, 122, 255);
+  color: rgb(255, 255, 255);
+}

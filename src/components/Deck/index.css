@@ -1,0 +1,9 @@
+.jets-deck {
+  width: 100%;
+  margin: 40px 0;
+}
+
+.jets-deck--title {
+  font-size: 18px;
+  font-weight: bold;
+}
