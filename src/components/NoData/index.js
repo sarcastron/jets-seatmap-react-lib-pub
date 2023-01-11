@@ -1,6 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { JetsContext } from '../../common';
 import './index.css';
 
 export const JetsNoData = () => {
-  return <div className="jets-no-data">Seat map is not found for the flight</div>;
+  const { params } = useContext(JetsContext);
+
+  const styles = {
+    transform: `scale(${params?.antiScale})`,
+  };
+
+  return (
+    <div style={styles} className="jets-no-data">
+      Seat map is not found for the flight
+    </div>
+  );
 };

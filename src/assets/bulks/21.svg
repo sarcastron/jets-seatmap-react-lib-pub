@@ -1,0 +1,24 @@
+<?xml version="1.1" encoding="utf-8"?>
+<svg
+	id="bulk-21"
+	version="1.1"
+	viewBox="0 0 287 235"
+	xmlns="http://www.w3.org/2000/svg"
+	icon-transform="scale(0.66) rotate(-4.5) translate(170 38)"
+>
+	<path
+	class="bulk-base"
+		fill="white"
+		fill-opacity="1"
+		stroke-width="3"
+		d="M0,235h271c10,0,16-5.7,16-14V113H0V235z"
+	/>
+	<path
+	class="bulk-cut"
+		fill="white"
+		fill-opacity="1"
+		stroke-width="1"
+		d="M270,0C260.4,0,95.2,11.3,62,17S0,49,0,104v131c0,0,9.9-74.3,66-79s199-15,199-15c10.3,0,22-3.7,22-16V20
+		C287,6.2,278.3,0,270,0z"
+	/>
+</svg>

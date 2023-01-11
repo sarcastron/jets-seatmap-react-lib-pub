@@ -9,8 +9,31 @@ const UNSELECT_BTN_KEY = 'unselect';
 
 export const JetsTooltip = ({ data }) => {
   const { onTooltipClose, onSeatSelect, isSelectAvailable, onSeatUnselect } = useContext(JetsContext);
-  const { number, classType, top, left, features, id, price, passenger, nextPassanger, passengerTypes, lang, rowName } = data;
-  const style = { top, left, width: DEFAULT_TOOLTIP_WIDTH };
+
+  const {
+    number,
+    classType,
+    top,
+    left,
+    features,
+    id,
+    price,
+    passenger,
+    nextPassanger,
+    passengerTypes,
+    lang,
+    rowName,
+    antiScale,
+    transformOrigin,
+  } = data;
+
+  const style = {
+    width: DEFAULT_TOOLTIP_WIDTH,
+    transformOrigin: transformOrigin,
+    transform: `scale(${antiScale})`,
+    top,
+    left,
+  };
 
   const isSelectDisabled = () => {
     return (

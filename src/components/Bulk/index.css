@@ -1,0 +1,48 @@
+.bulk {
+  position: absolute;
+}
+
+.bulk__icon {
+  display: block;
+  height: 100%;
+  width: 100%;
+
+  object-fit: contain;
+}
+
+.bulk .bulk-base {
+  fill: rgb(186, 199, 213);
+}
+
+.bulk .bulk-cut {
+  fill: rgb(148, 168, 190);
+}
+
+.bulk .icon {
+  fill: rgb(70, 81, 94);
+}
+
+.bulk__sticker_wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.bulk__sticker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+}
+
+.bulk__sticker--album {
+  width: 4em;
+  height: 2em;
+}
+
+.bulk__sticker--portrait {
+  height: 2em;
+  width: 2em;
+}

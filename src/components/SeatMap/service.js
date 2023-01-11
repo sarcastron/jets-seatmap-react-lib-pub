@@ -1,4 +1,4 @@
-import { DEFAULT_FEATURES_LIST, DEFAULT_TOOLTIP_WIDTH, SEAT_STATUS_MAP, SEAT_TYPE_MAP } from '../../common';
+import { DEFAULT_FEATURES_LIST, DEFAULT_TOOLTIP_WIDTH, ENTITY_STATUS_MAP, ENTITY_TYPE_MAP } from '../../common';
 import { JetsSeatMapApiService } from './api';
 import { JetsContentPreparer } from './preparer';
 
@@ -13,13 +13,13 @@ export class JetsSeatMapService {
     const data = { flights: [flight], featuresList: DEFAULT_FEATURES_LIST, lang, units };
     const response = await this._api.getPlaneFeatures(data);
     const activePassenger = passengers?.find(item => item.seat?.seatLabel);
-    let content = this._preparer.prepareContent(response[0], config);
+    let { content, params, exits, bulks } = this._preparer.prepareData(response[0], config);
 
     if (availability) content = this.setAvailabilityHandler(content, availability);
 
     if (passengers && activePassenger) content = this.setPassengersHandler(content, passengers);
 
-    return content;
+    return { content, params, exits, bulks };
   };
 
   selectSeatHandler = (content, seat, passengersList) => {
@@ -56,7 +56,7 @@ export class JetsSeatMapService {
   };
 
   setAvailabilityHandler = (content, availability) => {
-    const { selected, available, unavailable } = SEAT_STATUS_MAP;
+    const { selected, available, unavailable } = ENTITY_STATUS_MAP;
     const wildCard = availability?.find(item => item.label === '*');
 
     return content.map(deck => {
@@ -72,7 +72,7 @@ export class JetsSeatMapService {
             seat['price'] = `${currency} ${price || 0}` || '';
             seat['passengerTypes'] = found.onlyForPassengerType ||
               wildCard?.onlyForPassengerType || ['ADT', 'CHD', 'INF'];
-          } else if (seat.type === SEAT_TYPE_MAP.seat) {
+          } else if (seat.type === ENTITY_TYPE_MAP.seat) {
             seat['status'] = wildCard ? available : unavailable;
             seat['price'] = `${wildCard?.currency} ${wildCard?.price || 0}` || '';
             seat['passenger'] = null;
@@ -88,7 +88,7 @@ export class JetsSeatMapService {
   };
 
   setPassengersHandler = (content, passengers) => {
-    const { selected, available, unavailable } = SEAT_STATUS_MAP;
+    const { selected, available, unavailable } = ENTITY_STATUS_MAP;
 
     return content.map(deck => {
       return deck.map(row => {
@@ -118,31 +118,34 @@ export class JetsSeatMapService {
     });
   };
 
-  calculateTooltipData = (seatData, seatNode, seatMapNode) => {
-    const { offsetTop: seatTop, offsetLeft: seatLeft } = seatNode
-    const { width: seatMapWidth } = seatMapNode.getBoundingClientRect();
+  calculateTooltipData = (seatData, seatNode, seatMapNode, antiScale) => {
+    const { offsetTop: seatTop, offsetLeft: seatLeft } = seatNode;
+    const { width } = seatMapNode.getBoundingClientRect();
+    const seatMapWidth = width * antiScale;
     const seatMapLeftBorder = 0;
-    const isRightOverlapped = seatLeft + DEFAULT_TOOLTIP_WIDTH > seatMapWidth;
-    const isLeftOverlapped = seatLeft - DEFAULT_TOOLTIP_WIDTH < seatMapLeftBorder;
-    const top = seatTop + seatData.size / 2;
+    const tooltipWidth = DEFAULT_TOOLTIP_WIDTH * antiScale;
+    const isRightOverlapped = seatLeft + tooltipWidth > seatMapWidth;
+    const isLeftOverlapped = seatLeft - tooltipWidth < seatMapLeftBorder;
+    const top = seatTop + seatData.size.height / 2;
     const left = isRightOverlapped
       ? isLeftOverlapped
         ? seatMapWidth - seatMapWidth / 2 - DEFAULT_TOOLTIP_WIDTH / 2
-        : seatLeft - DEFAULT_TOOLTIP_WIDTH + seatData.size / 2
-      : seatLeft + seatData.size / 2;
+        : seatLeft - DEFAULT_TOOLTIP_WIDTH + seatData.size.width / 2
+      : seatLeft + seatData.size.width / 2;
+    const transformOrigin = isRightOverlapped ? (isLeftOverlapped ? 'center' : 'top right') : 'top left';
 
-    return { ...seatData, top, left };
+    return { ...seatData, top, left, transformOrigin, antiScale };
   };
 
   getNextPassenger = passengers => {
     return passengers?.find(passenger => !passenger.seat?.seatLabel);
   };
 
-  addAbbrToPassengers = (passengers) => {
+  addAbbrToPassengers = passengers => {
     return passengers?.map((passenger, index) => {
       passenger['abbr'] = this._getPassengerAbbr(passenger, index + 1);
       return passenger;
-    })
+    });
   };
 
   _getPassengerAbbr = (passenger, index) => {
@@ -162,7 +165,7 @@ export class JetsSeatMapService {
         : passengerLabel.substring(0, 2).toUpperCase();
 
     return abbr;
-  }
+  };
 
   findPassengerBySeatNumber = (passengers, seatNumber) => {
     return passengers.find(passenger => passenger.seat?.seatLabel === seatNumber);

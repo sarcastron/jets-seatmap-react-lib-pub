@@ -2,17 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import { JetsDeck } from '../Deck';
 import { JetsSeatMapService } from './service';
 import { JetsNoData } from '../NoData';
+import { JetsNotInit } from '../NotInit';
 import {
   DEFAULT_LANG,
   DEFAULT_SEAT_MAP_WIDTH,
   DEFAULT_UNITS,
   JetsContext,
-  SEAT_STATUS_MAP,
-  SEAT_TYPE_MAP,
+  ENTITY_STATUS_MAP,
+  ENTITY_TYPE_MAP,
 } from '../../common';
-import { JetsTooltip } from '../Tooltip';
 import './index.css';
-import { JetsNotInit } from '../NotInit';
 
 export const JetsSeatMap = ({
   flight,
@@ -29,6 +28,9 @@ export const JetsSeatMap = ({
   const [passengersList, setPassengersList] = useState([]);
   const [activeTooltip, setActiveTooltip] = useState(null);
   const [isSelectAvailable, setSelectAvailable] = useState(false);
+  const [params, setParams] = useState(null);
+  const [exits, setExits] = useState([]);
+  const [bulks, setBulks] = useState([]);
 
   const seatMapRef = useRef();
 
@@ -38,9 +40,12 @@ export const JetsSeatMap = ({
     let isMounted = true;
 
     if (flight?.id) {
-      service.getSeatMapData(flight, availability, passengers, configuration).then(info => {
+      service.getSeatMapData(flight, availability, passengers, configuration).then(data => {
         if (isMounted) {
-          setContent(info);
+          setParams(data.params);
+          setContent(data.content);
+          setExits(data.exits);
+          setBulks(data.bulks);
           setSeatMapInited(true);
           onSeatMapInited();
         }
@@ -73,15 +78,15 @@ export const JetsSeatMap = ({
     setPassengersList(passengers);
   };
 
-  const onSeatClick = (data, element) => {
+  const onSeatClick = (data, element, event) => {
     const notAvailable =
-      data.type !== SEAT_TYPE_MAP.seat ||
-      (data.status !== SEAT_STATUS_MAP.available && data.status !== SEAT_STATUS_MAP.selected);
+      data.type !== ENTITY_TYPE_MAP.seat ||
+      (data.status !== ENTITY_STATUS_MAP.available && data.status !== ENTITY_STATUS_MAP.selected);
 
     if (notAvailable) return;
 
     const nextPassanger = service.getNextPassenger(passengersList);
-    const tooltipData = service.calculateTooltipData(data, element.current, seatMapRef.current);
+    const tooltipData = service.calculateTooltipData(data, element.current, seatMapRef.current, params?.antiScale);
 
     setSelectAvailable(!!nextPassanger);
     setActiveTooltip({ ...tooltipData, nextPassanger, lang: configuration.lang });
@@ -111,19 +116,50 @@ export const JetsSeatMap = ({
     setActiveTooltip(null);
   };
 
+  const scaleWrapStyle = {
+    zoom: params?.scale,
+    MozTransform: `scale(${params?.scale})`,
+    transformOrigin: 'top left',
+    width: params?.innerWidth,
+  };
+
+  const providerValue = {
+    onSeatClick,
+    onTooltipClose,
+    onSeatSelect,
+    onSeatUnselect,
+    isSelectAvailable,
+    params,
+    activeTooltip,
+  };
+
   return (
-    <JetsContext.Provider value={{ onSeatClick, onTooltipClose, onSeatSelect, onSeatUnselect, isSelectAvailable }}>
-      <div ref={seatMapRef} className="jets-seat-map" style={{ width: configuration.width }}>
-        {activeTooltip && <JetsTooltip data={activeTooltip} />}
-        {content.length ? (
-          content.map((deck, index) => (
-            <JetsDeck rows={deck} lang={configuration.lang} number={content.length > 1 && deck.length ? index + 1 : null} key={index} />
-          ))
-        ) : isSeatMapInited ? (
-          <JetsNoData />
-        ) : (
-          <JetsNotInit />
-        )}
+    <JetsContext.Provider value={providerValue}>
+      <div
+        ref={seatMapRef}
+        className="jets-seat-map"
+        style={{
+          width: configuration.width,
+        }}
+      >
+        <div style={scaleWrapStyle}>
+          {content?.length ? (
+            content?.map((deck, index) => (
+              <JetsDeck
+                rows={deck}
+                lang={configuration.lang}
+                number={content.length > 1 && deck.length ? index + 1 : null}
+                key={index}
+                exits={exits[index]}
+                bulks={bulks[index]}
+              />
+            ))
+          ) : isSeatMapInited ? (
+            <JetsNoData />
+          ) : (
+            <JetsNotInit />
+          )}
+        </div>
       </div>
     </JetsContext.Provider>
   );

@@ -1,6 +1,10 @@
 .jets-deck {
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  display: flex;
   width: 100%;
-  margin: 40px 0;
+  position: relative;
 }
 
 .jets-deck--title {

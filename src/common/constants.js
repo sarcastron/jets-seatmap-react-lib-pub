@@ -1,4 +1,6 @@
-export const SEAT_STATUS_MAP = {
+//#region Entity
+
+export const ENTITY_STATUS_MAP = {
   available: 'available',
   unavailable: 'unavailable',
   selected: 'selected',
@@ -7,14 +9,14 @@ export const SEAT_STATUS_MAP = {
   disabled: 'disabled',
 };
 
-export const SEAT_TYPE_MAP = {
+export const ENTITY_TYPE_MAP = {
   seat: 'seat',
   aisle: 'aisle',
   empty: 'empty',
   index: 'index',
 };
 
-export const SEAT_SCHEME_MAP = {
+export const ENTITY_SCHEME_MAP = {
   seat: 'S',
   empty: 'E',
   aisle: '-',
@@ -26,6 +28,10 @@ export const CLASS_CODE_MAP = {
   p: 'Premium economy',
   e: 'Economy',
 };
+
+//#endregion
+
+//#region Localization
 
 export const LOCALIZATION_EN = {
   restrictedLegroom: 'Constrained Legroom',
@@ -147,6 +153,10 @@ export const LOCALES_MAP = {
   CN: LOCALIZATION_CN,
 };
 
+//#endregion
+
+//#region Configuration
+
 export const DEFAULT_FEATURES_LIST = ['seatDetails', 'cabin', 'seatMapLink'];
 
 export const DEFAULT_LANG = 'EN';
@@ -158,3 +168,59 @@ export const DEFAULT_SEAT_MARGIN = 3;
 export const DEFAULT_SEAT_MAP_WIDTH = 350;
 
 export const DEFAULT_TOOLTIP_WIDTH = 220;
+
+export const SEAT_SIZE_MAP = {
+  F: {
+    width: 124,
+    height: 200,
+  },
+  B: {
+    width: 124,
+    height: 200,
+  },
+  P: {
+    width: 106,
+    height: 120,
+  },
+  E: {
+    width: 106,
+    height: 120,
+  },
+};
+
+export const DEFAULT_SEAT_SIZE = {
+  width: 86,
+  height: 100,
+};
+
+export const DEFAULT_SEAT_CLASS = 'E';
+
+export const DEFAULT_DECK_TITLE_HEIGHT = 100;
+
+export const DEFAULT_INDEX_ROW_HEIGHT = 300;
+
+export const DECK_ITEM_ALIGN_MAP = {
+  left: 'left',
+  right: 'right',
+};
+
+export const DEFAULT_STYLE_POSITION = 'auto';
+
+//#endregion
+
+//#region Theme
+
+export const BASE_SEAT_COLOR = '#ccc';
+
+export const BASE_ARMREST_COLOR = 'rgb(185,186,186)';
+
+export const BASE_PASSENGER_BADGE_COLOR = '#1157ce';
+
+export const BASE_SEAT_STROKE_WIDTH = 1;
+
+export const SEAT_STATUS_COLOR_MAP = {
+  available: 'rgb(237, 237, 237)',
+  default: BASE_SEAT_COLOR,
+};
+
+//#endregion

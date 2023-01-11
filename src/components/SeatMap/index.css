@@ -1,7 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400');
 
 .jets-seat-map {
-  font-family: 'Montserrat', sans-serif;
   position: relative;
+
   width: 100%;
+  padding-top: 64px;
+
+  font-family: 'Montserrat', sans-serif;
 }

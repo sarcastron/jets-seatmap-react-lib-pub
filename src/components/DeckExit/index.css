@@ -1,0 +1,14 @@
+.deck-exit {
+  position: absolute;
+
+  width: 114px;
+  height: 114px;
+}
+
+.deck-bulk__image {
+  display: block;
+  height: 100%;
+  width: 100%;
+
+  object-fit: contain;
+}
