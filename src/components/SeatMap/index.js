@@ -116,9 +116,10 @@ export const JetsSeatMap = ({
     setActiveTooltip(null);
   };
 
+  const scaleTransformValue = `scale(${params?.scale})`;
+
   const scaleWrapStyle = {
-    zoom: params?.scale,
-    MozTransform: `scale(${params?.scale})`,
+    transform: scaleTransformValue,
     transformOrigin: 'top left',
     width: params?.innerWidth,
   };

@@ -65,15 +65,18 @@ export const JetsSeat = ({ data }) => {
   };
 
   const updatePassengerStyle = () => {
+    if (!$component.current) return;
+
     const $seatSvg = $component.current.querySelector('.seat');
 
     if (!$seatSvg) return;
 
     const { height } = $seatSvg.getBoundingClientRect();
+    const preparedHeight = height * params.antiScale;
 
     const newPassengerStyle = { ...passengerStyle };
 
-    newPassengerStyle.top = height / 2 - newPassengerStyle.height / 2;
+    newPassengerStyle.top = preparedHeight / 2 - newPassengerStyle.height / 2;
 
     if (passenger?.passengerColor) {
       newPassengerStyle.backgroundColor = passenger.passengerColor;

@@ -174,7 +174,7 @@ export class JetsContentPreparer {
   };
 
   _getBiggestDeckRow = rows => {
-    const sorted = [...rows].sort((a, b) => b.seats.length - a.seats.length);
+    const sorted = [...rows].sort((a, b) => b.seatScheme.length - a.seatScheme.length);
 
     return sorted[0];
   };

@@ -1,14 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
-import SVG from 'react-inlinesvg';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import { Sticker } from './ui/Sticker';
 
 import './index.css';
 import { DECK_ITEM_ALIGN_MAP, DEFAULT_STYLE_POSITION } from '../../common/constants';
+import { BULK_TEMPLATE_MAP } from './constants';
+import { JetsContext } from '../../common';
 
 const SCALE_BULK_COEFF = 0.7;
 
 export const JetsBulk = ({ id, type, align, width, height, iconType, xOffset, topOffset }) => {
+  const { params } = useContext(JetsContext);
   const [stickerWrapperHeight, setStickerWrapperHeight] = useState(0);
   const $component = useRef(null);
 
@@ -38,22 +40,33 @@ export const JetsBulk = ({ id, type, align, width, height, iconType, xOffset, to
   };
 
   const onLoadBulk = () => {
+    if (!$component.current) return;
+
     const $bulkBase = $component.current.querySelector('.bulk-base');
 
-    const { height: bulkPartHeight } = $bulkBase.getBoundingClientRect();
+    if (!$bulkBase) return;
 
-    const preparedStickerWrapperHeight = Math.round(style.height - bulkPartHeight * SCALE_BULK_COEFF);
+    const { height: bulkPartHeight } = $bulkBase.getBoundingClientRect();
+    const preparedStickerWrapperHeight = Math.round(
+      style.height - bulkPartHeight * params.antiScale * SCALE_BULK_COEFF
+    );
 
     setStickerWrapperHeight(preparedStickerWrapperHeight);
   };
 
   useEffect(() => {
     addFontSizeToBulk();
+    onLoadBulk();
   }, []);
 
   return (
     <div className="bulk" style={style} ref={$component}>
-      <SVG className="bulk__icon" onLoad={onLoadBulk} src={require(`../../assets/bulks/${id}.svg`)} />
+      <div
+        className="bulk__icon"
+        dangerouslySetInnerHTML={{
+          __html: BULK_TEMPLATE_MAP.get(id),
+        }}
+      />
       <div
         className="bulk__sticker_wrap"
         style={{

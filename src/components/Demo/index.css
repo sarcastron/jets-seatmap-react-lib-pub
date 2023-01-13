@@ -30,6 +30,8 @@
 .jets-demo--controller > textarea {
   width: 75%;
   resize: none;
+  font-size: 13px;
+  font-family: monospace;
 }
 
 .jets-demo--btn {
