@@ -69,6 +69,8 @@ export const LOCALIZATION_EN = {
   select: 'Select',
   unselect: 'Unselect',
   deck: 'Deck',
+  personalTvInArmrest: 'Personal TV in armrest',
+  invertedSeat: 'Reverse seat',
 };
 
 export const LOCALIZATION_CN = {
@@ -107,6 +109,8 @@ export const LOCALIZATION_CN = {
   select: '選擇',
   unselect: '取消選擇',
   deck: '甲板',
+  personalTvInArmrest: '扶手里的个人电视',
+  invertedSeat: '倒座',
 };
 
 export const LOCALIZATION_RU = {
@@ -145,6 +149,8 @@ export const LOCALIZATION_RU = {
   select: 'Выбрать',
   unselect: 'Убрать',
   deck: 'Этаж',
+  personalTvInArmrest: 'Персональный телевизор в подлокотнике',
+  invertedSeat: 'Сиденье заднего хода',
 };
 
 export const LOCALES_MAP = {
@@ -157,7 +163,7 @@ export const LOCALES_MAP = {
 
 //#region Configuration
 
-export const DEFAULT_FEATURES_LIST = ['seatDetails', 'cabin', 'seatMapLink'];
+export const DEFAULT_FEATURES_LIST = ['seatDetails', 'cabin', 'entertainment', 'power', 'wifi', 'seatMapLink'];
 
 export const DEFAULT_LANG = 'EN';
 
@@ -167,7 +173,7 @@ export const DEFAULT_SEAT_MARGIN = 3;
 
 export const DEFAULT_SEAT_MAP_WIDTH = 350;
 
-export const DEFAULT_TOOLTIP_WIDTH = 220;
+export const DEFAULT_TOOLTIP_WIDTH = 260;
 
 export const SEAT_SIZE_MAP = {
   F: {

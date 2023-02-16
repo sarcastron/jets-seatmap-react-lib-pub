@@ -59,8 +59,8 @@ export const JetsTooltip = ({ data }) => {
             <ul>
               {features.map(({ title, icon, value }) => (
                 <li className="jets-tooltip--feature" key={title}>
-                  <span>{icon ? <img src={require(`../../assets/img/${icon}`)} /> : value}</span>
-                  <div>{title}</div>
+                  <span>{icon ? <img src={require(`../../assets/img/${icon}`)} /> : title}</span>
+                  <div>{value}</div>
                 </li>
               ))}
             </ul>

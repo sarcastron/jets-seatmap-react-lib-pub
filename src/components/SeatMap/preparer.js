@@ -16,6 +16,16 @@ import {
 const DEFAULT_INDEX_ROW_SEAT_TOP_OFFSET = 50;
 const DEFAULT_INDEX_ROW_SEAT_HEIGHT = 50;
 
+const SEAT_FEATURES_ICONS = {
+  '+': 'plus.svg',
+  '-': 'minus.svg',
+  wifi: 'wifi.svg',
+  wifi_enabled: 'wifi.svg',
+  wifiEnabled: 'wifi.svg',
+  power: 'power.svg',
+  audioVideo: 'audio-video.svg',
+};
+
 export class JetsContentPreparer {
   _calculator = null;
 
@@ -26,18 +36,19 @@ export class JetsContentPreparer {
   prepareData = (content, config) => {
     if (!content) return [];
 
-    const { cabin, seatDetails } = content;
+    const { cabin, seatDetails, entertainment, power, wifi } = content;
     const decks = seatDetails?.decks;
     const biggestRow = this._getBiggestRowInfo(decks);
     const params = this._calculator.getSeatMapParams(biggestRow, decks, config);
 
     const isDecksExist = decks && decks.length;
+    const mergedCabinFeatures = this._mergeCabinFeatures(cabin, entertainment, power, wifi);
 
     const preparedContent =
       decks?.map(({ rows }) => {
         const options = { config, seatsNumber: biggestRow.size };
 
-        return this._getPreparedRows(rows, cabin, options);
+        return this._getPreparedRows(rows, mergedCabinFeatures, options);
       }) || [];
 
     const preparedExits = isDecksExist ? this._getPreparedExits(decks) : [];
@@ -50,6 +61,24 @@ export class JetsContentPreparer {
       bulks: preparedBulks,
     };
   };
+
+  _mergeCabinFeatures(cabin, entertainment, power, wifi) {
+    const merged = { ...cabin };
+
+    if (entertainment.exists && entertainment.summary) {
+      merged['audioVideo'] = entertainment.summary;
+    }
+
+    if (power.exists && power.summary) {
+      merged['power'] = power.summary;
+    }
+
+    if (wifi.exists && wifi.summary) {
+      merged['wifi'] = wifi.summary;
+    }
+
+    return merged;
+  }
 
   _getPreparedExits(decks) {
     return this._updateDeckItemsTopOffset(decks, 'exits');
@@ -174,7 +203,12 @@ export class JetsContentPreparer {
   };
 
   _getBiggestDeckRow = rows => {
-    const sorted = [...rows].sort((a, b) => b.seatScheme.length - a.seatScheme.length);
+    const sorted = [...rows].sort((a, b) => {
+      const seatsRegex = /S/g;
+      const bSeatsCount = b.seatScheme.match(seatsRegex).length;
+      const aSeatsCount = a.seatScheme.match(seatsRegex).length;
+      return bSeatsCount - aSeatsCount;
+    });
 
     return sorted[0];
   };
@@ -197,29 +231,27 @@ export class JetsContentPreparer {
   };
 
   _prepareSeatFeatures = (seat, cabin, lang) => {
-    const { pitch, width, recline } = cabin;
-    const features = { ...seat?.features, pitch, width, recline };
+    const { pitch, width, recline, audioVideo, power, wifi } = cabin;
+    const features = { pitch, width, recline, audioVideo, power, wifi, ...seat?.features };
 
-    return Object.entries(features).map(([key, value]) => {
-      const title = LOCALES_MAP[lang][key] || key;
-      const isWifi = key === 'wifi_enabled' || key === 'wifiEnabled';
-      let icon = this._getFeatureIcon(value);
+    const prosOrCons = ['+', '-'];
 
-      if (isWifi) icon = this._getFeatureIcon('wifi');
+    const prepared = Object.entries(features).map(([key, value]) => {
+      const localized = LOCALES_MAP[lang][key] || key;
+      if (prosOrCons.includes(value)) {
+        // swap key-value for pros-cons features
+        const icon = SEAT_FEATURES_ICONS[value] || '';
 
-      return { title, icon, value };
+        return { title: null, icon, value: localized };
+      } else {
+        const icon = SEAT_FEATURES_ICONS[key] || '';
+
+        return { title: localized, icon, value };
+      }
     });
+
+    return prepared;
   };
 
-  _getFeatureIcon = value => {
-    let icon = '';
-
-    if (value === '+') icon = 'plus.svg';
-
-    if (value === '-') icon = 'minus.svg';
-
-    if (value === 'wifi') icon = 'wifi.svg';
-
-    return icon;
-  };
+  _prepareSeatFeature = (key, value, lang) => {};
 }
