@@ -51,8 +51,6 @@ export const JetsTooltip = ({ data, parentRow }) => {
   const pointerHeight = 14;
   const seatHeight = data.size.height;
 
-  console.log(colorTheme);
-
   const parentPosition = parentRow.current.getBoundingClientRect().top - document.body.getBoundingClientRect().top;
   // bottom position by default
   // const negatePosition = Number(parentPosition + height > seatmapHeight);
