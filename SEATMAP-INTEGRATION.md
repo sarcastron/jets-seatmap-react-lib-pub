@@ -7,14 +7,23 @@ communication between the seatmap and a parent layer that embeds seatmap (furthe
 
 ## Installation
 
-First of all you need to `fork` this repository.
-
-Install dependencies:
+Need to `clone` this repository and install dependencies:
 
 `npm i`
 
-Rename _.env-sample_ to _.env_. Also you need to get the `APP_ID` and `PRIVATE_KEY` from Quicket GmbH support and put
-them into fields in _.env_ file.
+Here you have 2 options:
+
+1. rename _.env-sample_ to _.env_. Also you need to get the `APP_ID` and `PRIVATE_KEY` from Quicket GmbH support team
+   and put them into fields in _.env_ file.
+2. or directly change `config-mock.js`:
+
+```
+  apiUrl: process.env.JETS_BASE_API_URL,
+  apiAppId: process.env.JETS_APP_ID,
+  apiKey: process.env.JETS_PRIVATE_KEY,
+```
+
+replace reading of env-variables with your credentials.
 
 Run storybook:
 
@@ -44,7 +53,7 @@ or include this string into your package.json dependencies if you use the github
 
 This section explains how to integrate seatmap into React.js application.
 
-Embed seatmap into your component page via `<JetsSeatMap>` tag:
+Create your [config](#config) and embed seatmap into your component page via `<JetsSeatMap>` tag:
 
 ```jsx
 <JetsSeatMap
@@ -120,7 +129,7 @@ The **departure** and **arrival** fields must consist the codes of airports. The
 ### <a name="availability"></a> Availability
 
 The availability property is array of objects and describes which seats are able for passengers. You can pass it
-asynchronously or not pass at all.
+asynchronously or not pass at all, it is `optional`.
 
 Interface, describing data types:
 
@@ -178,7 +187,8 @@ If `onlyForPassengerType` field is empty or doesn't exist, then it has no restri
 ### <a name="passengers"></a> Passengers
 
 The passengers property is array of objects and describes the passengers for seating according to the cabin map . You
-can pass it asynchronously or not pass at all.
+can pass it asynchronously or not pass at all, it is `optional`. If you don't pass the passengers list - seat selection
+will not work.
 
 Interface, describing data types:
 
@@ -263,19 +273,84 @@ interface IConfig {
   width: number;
   lang: string;
   units: TUnit;
+  apiUrl: string;
+  apiAppId: string;
+  apiKey: string;
+  colorTheme: IColorTheme;
 }
 
 type TUnit = 'metric' | 'imperials';
 
-type TLang = 'EN' | 'RU' | 'CN';
+type TLang = 'EN' | 'RU' | 'CN' | 'DE' | 'ES' | 'PL';
+
+interface IColorTheme {
+  deckLabelTitleColor: string;
+  deckBodyColor: string;
+  deckBodyWidth: number;
+
+  floorColor: string;
+  seatLabelColor: string;
+  seatStrokeColor: string;
+  seatStrokeWidth: number;
+  seatArmrestColor: string;
+
+  defaultPassengerBadgeColor: string;
+  fontFamily: string;
+
+  tooltipBackgroundColor: string;
+  tooltipHeaderColor: string;
+  tooltipBorderColor: string;
+  tooltipFontColor: string;
+  tooltipIconColor: string;
+  tooltipIconBorderColor: string;
+  tooltipIconBackgroundColor: string;
+  tooltipSelectButtonTextColor: string;
+  tooltipSelectButtonBackgroundColor: string;
+  tooltipCancelButtonTextColor: string;
+  tooltipCancelButtonBackgroundColor: string;
+}
 ```
 
-Example of data seatmap receives:
+Customize the color theme, field `colorTheme`, to match your website colors. In the field `colorTheme.fontFamily` - you
+can set any font available at your website.
+
+Example of config data:
 
 ```javascript
-width: 430;
-lang: 'RU';
-units: 'metric';
+{
+  width: 400;
+  lang: 'RU';
+  units: 'metric';
+  apiUrl: 'https://sandbox.quicket.io/api/v1'
+  apiAppId: 'REPLACE_ME_WITH_YOUR_API_APP_ID',
+  apiKey: 'REPLACE_ME_WITH_YOUR_API_KEY',
+  colorTheme: {
+    deckLabelTitleColor: 'white',
+    deckBodyColor: 'darkgrey',
+    deckBodyWidth: 25,
+
+    floorColor: 'rgb(30,60,90)',
+    seatLabelColor: 'white',
+    seatStrokeColor: 'rgb(237, 237, 237)',
+    seatStrokeWidth: 1,
+    seatArmrestColor: '#cccccc',
+
+    defaultPassengerBadgeColor: 'darkred',
+    fontFamily: 'Montserrat, sans-serif',
+
+    tooltipBackgroundColor: 'rgb(255,255,255)',
+    tooltipHeaderColor: '#4f6f8f',
+    tooltipBorderColor: 'rgb(255,255,255)',
+    tooltipFontColor: '#4f6f8f',
+    tooltipIconColor: '#4f6f8f',
+    tooltipIconBorderColor: '#4f6f8f',
+    tooltipIconBackgroundColor: '#fff',
+    tooltipSelectButtonTextColor: '#fff',
+    tooltipSelectButtonBackgroundColor: 'rgb(42, 85, 128)',
+    tooltipCancelButtonTextColor: '#fff',
+    tooltipCancelButtonBackgroundColor: 'rgb(155, 0, 0)',
+  }
+}
 ```
 
 By default config looks like:
@@ -284,9 +359,20 @@ By default config looks like:
 width: 300;
 lang: 'EN';
 units: 'metric';
+apiUrl: 'https://sandbox.quicket.io/api/v1'
+apiAppId: '',
+apiKey: '',
 ```
 
-If you will not pass the config param or any config fields then the properties will be set with default values.
+Api URL and credentials are `required` fields. `If you will not set them - the lib won't work`.
+
+```
+  apiUrl: string;
+  apiAppId: string;
+  apiKey: string;
+```
+
+If you will not pass `optional config params` then the properties will be set with default values.
 
 &nbsp;
 

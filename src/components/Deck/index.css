@@ -5,9 +5,13 @@
   display: flex;
   width: 100%;
   position: relative;
+  box-sizing: border-box;
+  margin: 10px auto 0 auto;
 }
 
 .jets-deck--title {
+  position: absolute;
+  top: 0px;
   font-size: 18px;
   font-weight: bold;
 }

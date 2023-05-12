@@ -7,19 +7,11 @@
   float: left;
 }
 
-.jets-seat-pillow {
-  position: absolute;
-  bottom: 0;
-  left: calc(50% - 6px);
-  width: 12px;
-  height: 4px;
-  background-color: #fff;
-}
-
 .jets-unavailable {
   position: relative;
   cursor: not-allowed;
-  filter: brightness(50%);
+  /* opacity: 0.3; */
+  filter: grayscale(0.9);
 }
 
 .jets-available {

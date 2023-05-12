@@ -16,11 +16,11 @@
   height: 40px;
   border: 1px solid #ccc;
   color: #fff;
-  background-color: rgb(56, 84, 245);
+  background-color: #4071b9;
 }
 
 .jets-btn:disabled {
-  background-color: #ccc;
-  color: #000;
+  background-color: #ccc !important;
+  color: #000 !important;
   cursor: not-allowed;
 }

@@ -7,7 +7,7 @@ export const SeatIcon = ({ seatType, style }) => {
     <div
       className="jets-seat-svg"
       dangerouslySetInnerHTML={{
-        __html: seatTemplateService.getTemplateBySeatType(seatType, style),
+        __html: seatTemplateService.getSeatIcon(seatType, style),
       }}
     />
   );

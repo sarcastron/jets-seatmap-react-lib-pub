@@ -20,7 +20,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 8px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: bold;
 }
 
@@ -36,6 +36,11 @@
   height: 18px;
 }
 
+.jets-tooltip--feature .svg_span {
+  width: 18px;
+  height: 18px;
+}
+
 .jets-tooltip--feature > span {
   display: block;
   margin-right: 5px;
@@ -44,13 +49,11 @@
 .jets-tooltip--features > ul > li {
   color: #4f6f8f;
   font-size: 13px;
-  font-weight: 500;
   display: flex;
   align-items: center;
   width: 100%;
   margin-bottom: 0.6rem;
   line-height: 1.4;
-  font-weight: bold;
 }
 
 .jets-tooltip--btns-block {
@@ -64,10 +67,11 @@
   vertical-align: middle;
   text-align: center;
   font-family: inherit;
-  font-weight: 600;
+  font-weight: bold;
   line-height: 1.5;
   cursor: pointer;
-  width: 50%;
+  width: 48%;
+  margin: 1%;
   font-size: 14px;
   text-decoration: none;
   border-radius: 2px;
@@ -76,12 +80,39 @@
   padding: 9.5px 18px;
 }
 
-.jets-cancel-btn {
-  background-color: rgb(237, 240, 243);
-  color: rgb(0, 24, 51);
+.jets-tooltip--arrow-pointer {
+  position: absolute;
+
+  margin: 0 0 0 -16px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 14px 16px 0 16px;
+  border-color: rgb(255, 255, 255) transparent transparent transparent;
+  transform-origin: top;
 }
 
-.jets-select-btn {
-  background-color: rgb(0, 122, 255);
-  color: rgb(255, 255, 255);
+.jets-tooltip--measurements {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+}
+
+.jets-tooltip--measurement {
+  margin: 4%;
+  border: 1px solid #4f6f8f;
+  border-radius: 6px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.jets-tooltip--measurement svg {
+  display: block;
+  height: 40px;
+}
+
+.jets-tooltip--measurement-value {
+  text-align: center;
+  margin-top: 10px;
+  color: #4f6f8f;
 }

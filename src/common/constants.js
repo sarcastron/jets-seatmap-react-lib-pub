@@ -1,3 +1,5 @@
+import { LOCALE_EN, LOCALE_RU, LOCALE_CN, LOCALE_DE, LOCALE_ES, LOCALE_PL } from './i18n.languages';
+
 //#region Entity
 
 export const ENTITY_STATUS_MAP = {
@@ -33,130 +35,13 @@ export const CLASS_CODE_MAP = {
 
 //#region Localization
 
-export const LOCALIZATION_EN = {
-  restrictedLegroom: 'Constrained Legroom',
-  extraLegroom: 'Extra Legroom',
-  noFloorStorage: 'No underseat storage',
-  noOverheadStorage: 'Limited storage space',
-  limitedOverheadStorage: 'Limited storage space',
-  trayTableInArmrest: 'Tray table in the armrest',
-  getColdByExit: 'Close to exit, drafts and chilly',
-  misalignedWindow: 'Partial or missing window view',
-  noWindow: 'Partial or missing window view',
-  doNotRecline: 'Restricted recline, backaches possible',
-  limitedRecline: 'Restricted recline, backaches possible',
-  storageBoxBetweenWall: 'Storage box between wall',
-  nearLavatory: 'Close to restrooms',
-  nearGalley: 'Close to galleys',
-  nearStairs: 'Stairs, heavy traffic area',
-  wingInWindow: 'Wing from window view',
-  standardSeat: 'Standard seat',
-  reservedCrewSeat: 'Reserved',
-  bassinet: 'Baby bassinet available',
-  babyBassinet: 'Baby bassinet available',
-  audio_video_ondemand: 'Audio & Video On Demand',
-  audioVideo: 'Audio & Video On Demand',
-  wifi_enabled: 'WiFi enabled',
-  wifiEnabled: 'WiFi enabled',
-  usbPlug: 'USB plug',
-  usbPowerPlug: 'USB & power plug',
-  powerPlug: 'Power plug',
-  power: 'Power plug',
-  pitch: 'Pitch',
-  recline: 'Recline',
-  width: 'Width',
-  cancel: 'Cancel',
-  select: 'Select',
-  unselect: 'Unselect',
-  deck: 'Deck',
-  personalTvInArmrest: 'Personal TV in armrest',
-  invertedSeat: 'Reverse seat',
-};
-
-export const LOCALIZATION_CN = {
-  restrictedLegroom: '腿部空间较小',
-  extraLegroom: '腿部空间较大',
-  noFloorStorage: '前面无座位',
-  noOverheadStorage: '行李柜较小',
-  limitedOverheadStorage: '行李柜较小',
-  trayTableInArmrest: '托盘桌在扶手里',
-  getColdByExit: '靠近紧急出口，较冷',
-  misalignedWindow: '部分窗户或无窗户',
-  noWindow: '部分窗户或无窗户',
-  doNotRecline: '后仰角度小，可能背疼',
-  limitedRecline: '后仰角度小，可能背疼',
-  storageBoxBetweenWall: '牆間儲物箱',
-  nearLavatory: '靠近洗手间',
-  nearGalley: '靠近厨房',
-  nearStairs: '楼梯，来往人流较多',
-  wingInWindow: '机翼在窗外视线内',
-  standardSeat: '标准座位',
-  reservedCrewSeat: '已预订',
-  bassinet: '有婴儿摇篮',
-  babyBassinet: '有婴儿摇篮',
-  audio_video_ondemand: '自选式机上视听娱乐系统',
-  audioVideo: '自选式机上视听娱乐系统',
-  wifi_enabled: '有WiFi',
-  wifiEnabled: '有WiFi',
-  usbPlug: 'USB端口',
-  usbPowerPlug: 'USB端口及电源插座',
-  powerPlug: '电源插座',
-  power: '电源插座',
-  pitch: '座位间距',
-  width: '座位宽度',
-  recline: '倾斜度',
-  cancel: '取消',
-  select: '選擇',
-  unselect: '取消選擇',
-  deck: '甲板',
-  personalTvInArmrest: '扶手里的个人电视',
-  invertedSeat: '倒座',
-};
-
-export const LOCALIZATION_RU = {
-  restrictedLegroom: 'Мало места для ног',
-  extraLegroom: 'Много места для ног',
-  noFloorStorage: 'Нет места для ручной клади под сиденьем',
-  noOverheadStorage: 'Нет полки для ручной клади',
-  limitedOverheadStorage: 'Полка ручной клади ограничена в размерах',
-  trayTableInArmrest: 'Откидной столик в подлокотнике',
-  getColdByExit: 'Возле выхода',
-  misalignedWindow: 'Иллюминатор смещён',
-  noWindow: 'Иллюминатор отстутсвует',
-  doNotRecline: 'Спинка кресла не отклоняется',
-  limitedRecline: 'Ограниченное отклонение спинки кресла',
-  storageBoxBetweenWall: 'Ящик для хранения в стене',
-  nearLavatory: 'Около туалета',
-  nearGalley: 'Около буфета-кухни',
-  nearStairs: 'Рядом с лестницей, активное движение',
-  wingInWindow: 'Место возле крыла самолёта',
-  standardSeat: 'Стандартное сиденье',
-  reservedCrewSeat: 'Зарезервированное персоналом',
-  bassinet: 'Рядом с детской кроваткий',
-  babyBassinet: 'Рядом с детской кроваткой',
-  audio_video_ondemand: 'Развлекательная аудио- и видеопрограмма',
-  audioVideo: 'Развлекательная аудио- и видеопрограмма',
-  wifi_enabled: 'Наличие WiFi',
-  wifiEnabled: 'Наличие WiFi',
-  usbPlug: 'Наличие USB-порта',
-  usbPowerPlug: 'Наличие розетки и USB-порта',
-  powerPlug: 'Розетка',
-  power: 'Розетка',
-  pitch: 'Длинна',
-  width: 'Ширина',
-  recline: 'Наклон',
-  cancel: 'Закрыть',
-  select: 'Выбрать',
-  unselect: 'Убрать',
-  deck: 'Этаж',
-  personalTvInArmrest: 'Персональный телевизор в подлокотнике',
-  invertedSeat: 'Сиденье заднего хода',
-};
-
 export const LOCALES_MAP = {
-  EN: LOCALIZATION_EN,
-  RU: LOCALIZATION_RU,
-  CN: LOCALIZATION_CN,
+  CN: LOCALE_CN,
+  DE: LOCALE_DE,
+  EN: LOCALE_EN,
+  ES: LOCALE_ES,
+  PL: LOCALE_PL,
+  RU: LOCALE_RU,
 };
 
 //#endregion
@@ -175,24 +60,54 @@ export const DEFAULT_SEAT_MAP_WIDTH = 350;
 
 export const DEFAULT_TOOLTIP_WIDTH = 260;
 
-export const SEAT_SIZE_MAP = {
-  F: {
-    width: 124,
-    height: 200,
-  },
-  B: {
-    width: 124,
-    height: 200,
-  },
-  P: {
-    width: 106,
-    height: 120,
-  },
-  E: {
-    width: 106,
-    height: 120,
-  },
-};
+export const SEAT_SIZE_BY_TYPE = [
+  [86, 100],
+  [144, 218],
+  [160, 180],
+  [106, 160],
+  [122, 220],
+  [200, 200],
+  [200, 200],
+  [140, 200],
+  [150, 200],
+  [150, 200],
+  [200, 150],
+  [200, 150],
+  [200, 185],
+  [200, 185],
+  [120, 150],
+  [150, 175],
+  [150, 175],
+  [185, 175],
+  [185, 175],
+  [255, 175],
+  [130, 330],
+  [130, 330],
+  [200, 400],
+  [200, 400],
+  [200, 365],
+  [200, 365],
+  [200, 200],
+  [200, 200],
+  [200, 200],
+  [200, 200],
+  [200, 265],
+  [200, 265],
+  [200, 330],
+  [200, 330],
+  [200, 200],
+  [200, 200],
+  [550, 435],
+  [550, 435],
+  [550, 435],
+  [550, 435],
+  [275, 1230],
+  [275, 1230],
+  [550, 325],
+  [550, 325],
+  [550, 325],
+  [550, 325],
+];
 
 export const DEFAULT_SEAT_SIZE = {
   width: 86,
@@ -201,9 +116,11 @@ export const DEFAULT_SEAT_SIZE = {
 
 export const DEFAULT_SEAT_CLASS = 'E';
 
-export const DEFAULT_DECK_TITLE_HEIGHT = 100;
+export const DEFAULT_DECK_PADDING_SIZE = 10;
 
-export const DEFAULT_INDEX_ROW_HEIGHT = 300;
+export const DEFAULT_DECK_TITLE_HEIGHT = 80;
+
+export const DEFAULT_INDEX_ROW_HEIGHT = 400;
 
 export const DECK_ITEM_ALIGN_MAP = {
   left: 'left',
@@ -216,17 +133,31 @@ export const DEFAULT_STYLE_POSITION = 'auto';
 
 //#region Theme
 
-export const BASE_SEAT_COLOR = '#ccc';
+export const THEME_FLOOR_COLOR = 'rgb(30,60,90)';
 
-export const BASE_ARMREST_COLOR = 'rgb(185,186,186)';
+export const THEME_DECK_LABEL_TITLE_COLOR = 'rgb(255,255,255)';
+export const THEME_DECK_BODY_COLOR = 'darkgrey';
+export const THEME_DECK_BODY_WIDTH = 30;
 
-export const BASE_PASSENGER_BADGE_COLOR = '#1157ce';
+export const THEME_SEAT_LABEL_COLOR = 'rgb(255,255,255)';
+export const THEME_SEAT_ARMREST_COLOR = 'rgb(185,186,186)';
+export const THEME_SEAT_STROKE_WIDTH = 1;
+export const THEME_SEAT_STROKE_COLOR = 'rgb(237, 237, 237)';
 
-export const BASE_SEAT_STROKE_WIDTH = 1;
+export const THEME_DEFAULT_PASSENGER_BADGE_COLOR = '#1157ce';
+export const THEME_DEFAULT_FONT_FAMILY = 'Montserrat, sans-serif';
 
-export const SEAT_STATUS_COLOR_MAP = {
-  available: 'rgb(237, 237, 237)',
-  default: BASE_SEAT_COLOR,
-};
+export const THEME_TOOLTIP_BACKGROUND_COLOR = 'rgb(255,255,255)';
+export const THEME_TOOLTIP_HEADER_COLOR = '#4f6f8f';
+export const THEME_TOOLTIP_BORDER_COLOR = 'rgb(255,255,255)';
+export const THEME_TOOLTIP_FONT_COLOR = '#4f6f8f';
+export const THEME_TOOLTIP_ICON_COLOR = '#4f6f8f';
+export const THEME_TOOLTIP_ICON_BORDER_COLOR = '#4f6f8f';
+export const THEME_TOOLTIP_ICON_BACKGROUND_COLOR = '#f2f5f8';
+
+export const THEME_TOOLTIP_SELECT_BUTTON_TEXT_COLOR = 'rgb(255, 255, 255)';
+export const THEME_TOOLTIP_SELECT_BUTTON_BACKGROUND_COLOR = 'rgb(0, 122, 255)';
+export const THEME_TOOLTIP_CANCEL_BUTTON_TEXT_COLOR = 'rgb(0, 24, 51)';
+export const THEME_TOOLTIP_CANCEL_BUTTON_BACKGROUND_COLOR = 'rgb(237, 240, 243)';
 
 //#endregion

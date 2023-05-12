@@ -10,6 +10,27 @@ import {
   JetsContext,
   ENTITY_STATUS_MAP,
   ENTITY_TYPE_MAP,
+  THEME_DECK_LABEL_TITLE_COLOR,
+  THEME_FLOOR_COLOR,
+  THEME_SEAT_LABEL_COLOR,
+  THEME_SEAT_STROKE_COLOR,
+  THEME_SEAT_STROKE_WIDTH,
+  THEME_SEAT_ARMREST_COLOR,
+  THEME_DEFAULT_PASSENGER_BADGE_COLOR,
+  THEME_DEFAULT_FONT_FAMILY,
+  THEME_DECK_BODY_COLOR,
+  THEME_DECK_BODY_WIDTH,
+  THEME_TOOLTIP_BACKGROUND_COLOR,
+  THEME_TOOLTIP_BORDER_COLOR,
+  THEME_TOOLTIP_FONT_COLOR,
+  THEME_TOOLTIP_ICON_COLOR,
+  THEME_TOOLTIP_ICON_BORDER_COLOR,
+  THEME_TOOLTIP_ICON_BACKGROUND_COLOR,
+  THEME_TOOLTIP_HEADER_COLOR,
+  THEME_TOOLTIP_SELECT_BUTTON_TEXT_COLOR,
+  THEME_TOOLTIP_SELECT_BUTTON_BACKGROUND_COLOR,
+  THEME_TOOLTIP_CANCEL_BUTTON_TEXT_COLOR,
+  THEME_TOOLTIP_CANCEL_BUTTON_BACKGROUND_COLOR,
 } from '../../common';
 import './index.css';
 
@@ -23,18 +44,19 @@ export const JetsSeatMap = ({
   onSeatUnselected,
 }) => {
   const configuration = { ...JetsSeatMap.defaultProps.config, ...config };
+  const colorTheme = { ...JetsSeatMap.defaultProps.config.colorTheme, ...config.colorTheme };
   const [content, setContent] = useState([]);
   const [isSeatMapInited, setSeatMapInited] = useState(false);
   const [passengersList, setPassengersList] = useState([]);
   const [activeTooltip, setActiveTooltip] = useState(null);
   const [isSelectAvailable, setSelectAvailable] = useState(false);
   const [params, setParams] = useState(null);
+
   const [exits, setExits] = useState([]);
   const [bulks, setBulks] = useState([]);
 
   const seatMapRef = useRef();
-
-  const service = new JetsSeatMapService();
+  const service = new JetsSeatMapService(configuration);
 
   useEffect(() => {
     let isMounted = true;
@@ -122,6 +144,7 @@ export const JetsSeatMap = ({
     transform: scaleTransformValue,
     transformOrigin: 'top left',
     width: params?.innerWidth,
+    height: params?.scaledTotalDecksHeight,
   };
 
   const providerValue = {
@@ -131,6 +154,7 @@ export const JetsSeatMap = ({
     onSeatUnselect,
     isSelectAvailable,
     params,
+    colorTheme,
     activeTooltip,
   };
 
@@ -141,18 +165,22 @@ export const JetsSeatMap = ({
         className="jets-seat-map"
         style={{
           width: configuration.width,
+          height: params?.scaledTotalDecksHeight,
+          fontFamily: colorTheme.fontFamily,
         }}
       >
         <div style={scaleWrapStyle}>
           {content?.length ? (
             content?.map((deck, index) => (
               <JetsDeck
-                rows={deck}
+                rows={deck.rows}
                 lang={configuration.lang}
-                number={content.length > 1 && deck.length ? index + 1 : null}
-                key={index}
+                number={index + 1}
+                key={deck.uniqId}
                 exits={exits[index]}
                 bulks={bulks[index]}
+                height={deck.height}
+                width={deck.width}
               />
             ))
           ) : isSeatMapInited ? (
@@ -171,6 +199,32 @@ JetsSeatMap.defaultProps = {
     width: DEFAULT_SEAT_MAP_WIDTH,
     lang: DEFAULT_LANG,
     units: DEFAULT_UNITS,
+    colorTheme: {
+      deckLabelTitleColor: THEME_DECK_LABEL_TITLE_COLOR,
+      floorColor: THEME_FLOOR_COLOR,
+      seatLabelColor: THEME_SEAT_LABEL_COLOR,
+      seatStrokeColor: THEME_SEAT_STROKE_COLOR,
+      seatStrokeWidth: THEME_SEAT_STROKE_WIDTH,
+      seatArmrestColor: THEME_SEAT_ARMREST_COLOR,
+
+      defaultPassengerBadgeColor: THEME_DEFAULT_PASSENGER_BADGE_COLOR,
+      fontFamily: THEME_DEFAULT_FONT_FAMILY,
+
+      deckBodyColor: THEME_DECK_BODY_COLOR,
+      deckBodyWidth: THEME_DECK_BODY_WIDTH,
+
+      tooltipBackgroundColor: THEME_TOOLTIP_BACKGROUND_COLOR,
+      tooltipHeaderColor: THEME_TOOLTIP_HEADER_COLOR,
+      tooltipBorderColor: THEME_TOOLTIP_BORDER_COLOR,
+      tooltipFontColor: THEME_TOOLTIP_FONT_COLOR,
+      tooltipIconColor: THEME_TOOLTIP_ICON_COLOR,
+      tooltipIconBorderColor: THEME_TOOLTIP_ICON_BORDER_COLOR,
+      tooltipIconBackgroundColor: THEME_TOOLTIP_ICON_BACKGROUND_COLOR,
+      tooltipSelectButtonTextColor: THEME_TOOLTIP_SELECT_BUTTON_TEXT_COLOR,
+      tooltipSelectButtonBackgroundColor: THEME_TOOLTIP_SELECT_BUTTON_BACKGROUND_COLOR,
+      tooltipCancelButtonTextColor: THEME_TOOLTIP_CANCEL_BUTTON_TEXT_COLOR,
+      tooltipCancelButtonBackgroundColor: THEME_TOOLTIP_CANCEL_BUTTON_BACKGROUND_COLOR,
+    },
   },
   onSeatMapInited: () => {
     console.log('JetsSeatMap initialized!');

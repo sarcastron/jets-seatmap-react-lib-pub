@@ -4,12 +4,23 @@ React library that helps to render a plane seat map by flight relying on Quicket
 
 ## Installation
 
-First of all you need to `fork` this repository and install dependencies:
+Need to `clone` this repository and install dependencies:
 
 `npm i`
 
-Rename _.env-sample_ to _.env_. Also you need to get the `APP_ID` and `PRIVATE_KEY` from Quicket GmbH support and put
-them into fields in _.env_ file.
+Here you have 2 options:
+
+1. rename _.env-sample_ to _.env_. Also you need to get the `APP_ID` and `PRIVATE_KEY` from Quicket GmbH support team
+   and put them into fields in _.env_ file.
+2. or directly change `config-mock.js`:
+
+```
+  apiUrl: process.env.JETS_BASE_API_URL,
+  apiAppId: process.env.JETS_APP_ID,
+  apiKey: process.env.JETS_PRIVATE_KEY,
+```
+
+replace reading of env-variables with your credentials.
 
 Run storybook:
 
@@ -32,4 +43,4 @@ The page will reload if you make edits.<br />
 
 Builds the app for production to the `dist` folder.<br />
 
-The build is minified.<br /> Your app is ready to be deployed!
+The build is minified.<br /> Your lib is ready to be deployed!

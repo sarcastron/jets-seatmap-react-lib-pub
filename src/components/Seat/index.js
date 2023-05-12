@@ -1,13 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import {
-  JetsContext,
-  ENTITY_TYPE_MAP,
-  BASE_ARMREST_COLOR,
-  BASE_PASSENGER_BADGE_COLOR,
-  BASE_SEAT_STROKE_WIDTH,
-  SEAT_STATUS_COLOR_MAP,
-  BASE_SEAT_COLOR,
-} from '../../common';
+import { JetsContext, ENTITY_TYPE_MAP } from '../../common';
 import { SeatIcon } from './ui/SeatIcon';
 
 import './index.css';
@@ -15,7 +7,7 @@ import './index.css';
 const PASSENGER_BADGE_SIZE_COEF = 0.8;
 
 export const JetsSeat = ({ data }) => {
-  const { onSeatClick, params } = useContext(JetsContext);
+  const { onSeatClick, params, colorTheme } = useContext(JetsContext);
   const { letter, type, status, size, passenger, color, rotation, seatType, topOffset, leftOffset } = data;
   const { index, aisle } = ENTITY_TYPE_MAP;
   const componentClassNames = `jets-seat jets-${type} jets-${status} jets-seat-r-${rotation}`;
@@ -28,15 +20,9 @@ export const JetsSeat = ({ data }) => {
       height: size.width * PASSENGER_BADGE_SIZE_COEF,
       left: size.width / 2 - size.width * (PASSENGER_BADGE_SIZE_COEF / 2),
       top: size.height / 2 - size.width * (PASSENGER_BADGE_SIZE_COEF / 2),
-      backgroundColor: BASE_PASSENGER_BADGE_COLOR,
+      backgroundColor: colorTheme.defaultPassengerBadgeColor,
     };
   });
-
-  const getSeatColor = () => {
-    if (status === 'available') return SEAT_STATUS_COLOR_MAP['available'];
-
-    return BASE_SEAT_COLOR;
-  };
 
   const getSeatContent = () => {
     if (type === index || type === aisle) return letter;
@@ -54,14 +40,15 @@ export const JetsSeat = ({ data }) => {
   };
 
   const svgStyle = {
-    strokeColor: getSeatColor(),
-    armrestColor: BASE_ARMREST_COLOR,
+    strokeColor: colorTheme.seatStrokeColor,
+    armrestColor: colorTheme.seatArmrestColor,
     fillColor: color,
-    strokeWidth: BASE_SEAT_STROKE_WIDTH,
+    strokeWidth: colorTheme.seatStrokeWidth,
   };
 
   const indexContentStyle = {
     transform: `rotate(0deg) scale(${params.antiScale})`,
+    color: colorTheme.seatLabelColor,
   };
 
   const updatePassengerStyle = () => {

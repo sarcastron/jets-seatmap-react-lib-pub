@@ -67,14 +67,16 @@ export const JetsBulk = ({ id, type, align, width, height, iconType, xOffset, to
           __html: BULK_TEMPLATE_MAP.get(id),
         }}
       />
-      <div
-        className="bulk__sticker_wrap"
-        style={{
-          height: `${stickerWrapperHeight}px`,
-        }}
-      >
-        <Sticker iconType={iconType} />
-      </div>
+      {
+        <div
+          className="bulk__sticker_wrap"
+          style={{
+            height: `${stickerWrapperHeight}px`,
+          }}
+        >
+          <Sticker iconType={iconType} />
+        </div>
+      }
     </div>
   );
 };
