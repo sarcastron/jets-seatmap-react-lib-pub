@@ -1,0 +1,9 @@
+.jets-deck-selector {
+  position: absolute;
+  height: 40px;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 3px;
+  background-color: rgba(128, 128, 128, 0.5);
+  z-index: 1000;
+}

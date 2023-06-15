@@ -1,0 +1,11 @@
+.jets-plane-body {
+    margin: 0 auto;
+}
+.jets-deck-wrapper {
+    transform-style: preserve-3d;
+}
+
+.deck-floor {
+    position: relative;
+    transform-style: preserve-3d;
+}

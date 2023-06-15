@@ -1,23 +1,24 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import { JetsContext, LOCALES_MAP, DEFAULT_DECK_TITLE_HEIGHT, DEFAULT_DECK_PADDING_SIZE } from '../../common';
 import { JetsBulk } from '../Bulk';
 import { JetsDeckExit } from '../DeckExit';
+import { JetsWing } from '../Wing';
 import { JetsRow } from '../Row';
 import './index.css';
 
 const DECK_LOCALE_KEY = 'deck';
 
-export const JetsDeck = ({ rows, number, lang, exits, bulks, height, width }) => {
+export const JetsDeck = ({ deck, lang, exits, bulks, hideDeckTitle }) => {
+  const { rows, number, height, width, wingsInfo } = deck || {};
+
   const { params, colorTheme } = useContext(JetsContext);
+  const elementRef = useRef(null);
 
   const deckStyle = {
     height,
-    width,
     padding: `0 ${DEFAULT_DECK_PADDING_SIZE}px 0 ${DEFAULT_DECK_PADDING_SIZE}px`,
-    backgroundColor: colorTheme.floorColor,
-    borderLeft: `solid ${colorTheme.deckBodyColor}`,
-    borderRight: `solid ${colorTheme.deckBodyColor}`,
-    borderWidth: `${colorTheme.deckBodyWidth}px`,
+    transform: params?.isHorizontal && !params.rightToLeft ? 'rotate(180deg)' : '',
+    margin: '0 auto',
   };
 
   const titleStyle = {
@@ -28,8 +29,10 @@ export const JetsDeck = ({ rows, number, lang, exits, bulks, height, width }) =>
   };
 
   return (
-    <div className="jets-deck" style={deckStyle}>
-      {number && (
+    <div className="jets-deck" style={deckStyle} ref={elementRef}>
+      {params?.visibleWings && <JetsWing wingsInfo={wingsInfo} />}
+
+      {number && !hideDeckTitle && (
         <div className="jets-deck--title" style={titleStyle}>
           {LOCALES_MAP[lang][DECK_LOCALE_KEY]}: {number}
         </div>

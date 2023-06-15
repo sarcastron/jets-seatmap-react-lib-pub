@@ -1,5 +1,6 @@
 .bulk {
   position: absolute;
+  transform-style: preserve-3d;
 }
 
 .bulk__icon {
@@ -8,18 +9,6 @@
   width: 100%;
 
   object-fit: contain;
-}
-
-.bulk .bulk-base {
-  fill: rgb(186, 199, 213);
-}
-
-.bulk .bulk-cut {
-  fill: rgb(148, 168, 190);
-}
-
-.bulk .icon {
-  fill: rgb(70, 81, 94);
 }
 
 .bulk__sticker_wrap {

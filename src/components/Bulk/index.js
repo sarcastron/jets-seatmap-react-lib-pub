@@ -10,7 +10,8 @@ import { JetsContext } from '../../common';
 const SCALE_BULK_COEFF = 0.7;
 
 export const JetsBulk = ({ id, type, align, width, height, iconType, xOffset, topOffset }) => {
-  const { params } = useContext(JetsContext);
+  const { params, colorTheme } = useContext(JetsContext);
+  const { bulkBaseColor, bulkCutColor } = colorTheme;
   const [stickerWrapperHeight, setStickerWrapperHeight] = useState(0);
   const $component = useRef(null);
 
@@ -46,7 +47,9 @@ export const JetsBulk = ({ id, type, align, width, height, iconType, xOffset, to
 
     if (!$bulkBase) return;
 
-    const { height: bulkPartHeight } = $bulkBase.getBoundingClientRect();
+    const clientRect = $bulkBase.getBoundingClientRect();
+    const bulkPartHeight = params?.isHorizontal ? clientRect.width : clientRect.height;
+
     const preparedStickerWrapperHeight = Math.round(
       style.height - bulkPartHeight * params.antiScale * SCALE_BULK_COEFF
     );
@@ -59,12 +62,16 @@ export const JetsBulk = ({ id, type, align, width, height, iconType, xOffset, to
     onLoadBulk();
   }, []);
 
+  let coloredBulkSVG = BULK_TEMPLATE_MAP.get(id);
+  coloredBulkSVG = coloredBulkSVG.replace('$baseColor', bulkBaseColor);
+  coloredBulkSVG = coloredBulkSVG.replace('$cutColor', bulkCutColor);
+
   return (
     <div className="bulk" style={style} ref={$component}>
       <div
         className="bulk__icon"
         dangerouslySetInnerHTML={{
-          __html: BULK_TEMPLATE_MAP.get(id),
+          __html: coloredBulkSVG,
         }}
       />
       {

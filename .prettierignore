@@ -3,3 +3,4 @@ bin/public
 
 # Ignore all HTML files:
 .gitignore
+*.md

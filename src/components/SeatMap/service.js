@@ -1,19 +1,21 @@
 import {
   DEFAULT_FEATURES_LIST,
-  DEFAULT_TOOLTIP_WIDTH,
   ENTITY_STATUS_MAP,
   ENTITY_TYPE_MAP,
   JetsLocalStorageService,
+  DEFAULT_SEAT_PASSENGER_TYPES,
 } from '../../common';
 import { JetsSeatMapApiService } from './api';
 import { JetsContentPreparer } from '../../common/data-preparer';
+import { JetsDataHelper } from '../../common/data-helper';
 
 export class JetsSeatMapService {
   constructor(configuration) {
-    const { apiUrl, apiAppId, apiKey } = configuration;
+    const { apiUrl, apiAppId, apiKey, colorTheme } = configuration;
     const localStorage = new JetsLocalStorageService();
     this._api = new JetsSeatMapApiService(apiAppId, apiKey, apiUrl, localStorage);
     this._preparer = new JetsContentPreparer();
+    this._colorTheme = colorTheme;
   }
 
   getSeatMapData = async (flight, availability, passengers, config) => {
@@ -68,29 +70,46 @@ export class JetsSeatMapService {
 
   setAvailabilityHandler = (content, availability) => {
     const { selected, available, unavailable } = ENTITY_STATUS_MAP;
-    const wildCard = availability?.find(item => item.label === '*');
+    const wildCardSeatData = availability?.find(item => item.label === '*');
 
     return (
       content &&
       content.map(deck => {
         const rows = deck.rows.map(row => {
           const seats = row.seats.map(seat => {
-            const found = availability.find(item => {
+            const availableSeatData = availability.find(item => {
               return item.label === seat.number;
             });
 
-            if (found) {
-              const { price, currency } = found;
+            if (availableSeatData) {
+              const { price, currency } = availableSeatData;
               seat['status'] = seat['status'] === selected ? selected : available;
               seat['price'] = `${currency} ${price || 0}` || '';
-              seat['passengerTypes'] = found.onlyForPassengerType ||
-                wildCard?.onlyForPassengerType || ['ADT', 'CHD', 'INF'];
+              seat['passengerTypes'] =
+                availableSeatData.onlyForPassengerType ||
+                wildCardSeatData?.onlyForPassengerType ||
+                DEFAULT_SEAT_PASSENGER_TYPES;
+              seat['additionalProps'] = [
+                ...(availableSeatData?.additionalProps || []),
+                ...(wildCardSeatData?.additionalProps || []),
+              ];
+              seat['color'] = JetsDataHelper.validateColor(
+                availableSeatData?.color || wildCardSeatData?.color,
+                seat?.color
+              );
             } else if (seat.type === ENTITY_TYPE_MAP.seat) {
-              seat['status'] = wildCard ? available : unavailable;
-              seat['price'] = `${wildCard?.currency} ${wildCard?.price || 0}` || '';
+              seat['status'] = wildCardSeatData ? available : unavailable;
+              seat['price'] = wildCardSeatData ? `${wildCardSeatData?.currency} ${wildCardSeatData?.price || 0}` : null;
               seat['passenger'] = null;
-              seat['passengerTypes'] = wildCard?.onlyForPassengerType || ['ADT', 'CHD', 'INF'];
+              seat['passengerTypes'] = wildCardSeatData?.onlyForPassengerType || DEFAULT_SEAT_PASSENGER_TYPES;
+              seat['additionalProps'] = wildCardSeatData?.additionalProps || [];
+              seat['color'] = JetsDataHelper.validateColor(
+                wildCardSeatData?.color,
+                this._colorTheme.notAvailableSeatsColor
+              );
             }
+
+            seat['additionalProps'] = this._preparer._prepareSeatAdditionalProps(seat);
 
             return seat;
           });
@@ -136,34 +155,32 @@ export class JetsSeatMapService {
     });
   };
 
-  calculateTooltipData = (seatData, seatNode, seatMapNode, antiScale) => {
+  calculateTooltipData = (seatData, seatNode, seatMapNode, antiScale, isHorizontal) => {
     const { offsetTop: seatTop, offsetLeft: seatLeft, clientWidth: seatWidth } = seatNode;
-    const { width, height } = seatMapNode.getBoundingClientRect();
 
-    const seatMapWidth = width * antiScale;
-    const seatMapLeftBorder = 0;
+    const clientRect = seatMapNode.getBoundingClientRect();
+    const parentDeck = seatNode.closest('.tooltip-holder');
+
+    const width = isHorizontal ? clientRect.height : clientRect.width;
+    const height = isHorizontal ? clientRect.width : clientRect.height;
 
     const widthPercent = 0.95;
-    const tooltipWidth = `${100 / antiScale}%`;
+    const tooltipWidth = `${100 * widthPercent}%`;
 
-    const isRightOverlapped = seatLeft + tooltipWidth > seatMapWidth;
-    const isLeftOverlapped = seatLeft - tooltipWidth < seatMapLeftBorder;
     const top = seatTop + seatData.size.height / 2;
 
-    const left = 0;
-
-    const transformOrigin = 'top left';
-    const pointerOffset = seatLeft + seatWidth * 0.5;
+    const left = `${100 * (1 - widthPercent) * 0.5}%`;
 
     return {
       ...seatData,
       top,
       left,
-      transformOrigin,
       antiScale,
       width: tooltipWidth,
       seatmapHeight: height,
-      pointerOffset,
+      seatmapWidth: width,
+      activeDeck: parentDeck,
+      seatNode,
     };
   };
 

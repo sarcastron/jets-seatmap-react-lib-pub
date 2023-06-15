@@ -1,19 +1,42 @@
 const CONFIG_MOCK = {
   width: 400,
+
+  horizontal: false,
+  rightToLeft: false,
+
+  visibleFuselage: true,
+  visibleWings: false,
+
+  builtInDeckSelector: true,
+  singleDeckMode: true,
+
+  builtInTooltip: true,
+  externalPassengerManagement: false,
+
+  tooltipOnHover: false,
   lang: 'EN',
+
   apiUrl: process.env.JETS_BASE_API_URL,
   apiAppId: process.env.JETS_APP_ID,
   apiKey: process.env.JETS_PRIVATE_KEY,
+
   colorTheme: {
     deckLabelTitleColor: 'white',
-    deckBodyColor: 'darkgrey',
-    deckBodyWidth: 25,
+    deckHeightSpacing: 100,
+
+    wingsWidth: 50,
+    deckSeparation: 0,
 
     floorColor: 'rgb(30,60,90)',
     seatLabelColor: 'white',
     seatStrokeColor: 'rgb(237, 237, 237)',
     seatStrokeWidth: 1,
     seatArmrestColor: '#cccccc',
+    notAvailableSeatsColor: 'dimgrey',
+
+    bulkBaseColor: 'dimgrey',
+    bulkCutColor: 'lightgrey',
+    bulkIconColor: 'darkslategray',
 
     defaultPassengerBadgeColor: 'darkred',
     fontFamily: 'Montserrat, sans-serif',
@@ -28,7 +51,19 @@ const CONFIG_MOCK = {
     tooltipSelectButtonTextColor: '#fff',
     tooltipSelectButtonBackgroundColor: 'rgb(42, 85, 128)',
     tooltipCancelButtonTextColor: '#fff',
-    tooltipCancelButtonBackgroundColor: 'rgb(155, 0, 0)',
+    tooltipCancelButtonBackgroundColor: 'rgb(55, 55, 55)',
+
+    deckSelectorStrokeColor: '#fff',
+    deckSelectorFillColor: 'rgba(55, 55, 55, 0.5)',
+    deckSelectorSize: 30,
+
+    fuselageStrokeWidth: 16,
+
+    fuselageFillColor: 'lightgrey',
+    fuselageStrokeColor: 'darkgrey',
+
+    fuselageWindowsColor: 'darkgrey',
+    fuselageWingsColor: 'rgba(55, 55, 55, 0.5)',
   },
 };
 

@@ -1,0 +1,14 @@
+.jets-nose {
+  position: relative;
+  z-index: -1;
+}
+
+.jets-nose:not(.cut) .nose-dotted-line {
+  stroke: none;
+}
+
+.nose-dotted-line {
+    stroke: none;
+}
+
+

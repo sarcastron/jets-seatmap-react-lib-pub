@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 27.5.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg
+  version="1.1"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  x="0px"
+  y="0px"
+  viewBox="0 0 200 110"
+  style="enable-background: new 0 0 200 110"
+  xml:space="preserve"
+>
+  <style type="text/css">
+    .filling-straight {
+      fill: none;
+    }
+    .filling {
+      fill: #e5eaee;
+    }
+    .outline {
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 3;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10;
+    }
+    .windows {
+      fill: #ffffff;
+    }
+    .dotted-line {
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 0.9715, 5.8292;
+    }
+  </style>
+  <path
+    id="filling-straight"
+    class="filling-straight"
+    d="M3,110h194.1l1.2-1.5h0.2v-9.8c0,0-55.3-97.3-98.5-97.3C56.8,1.5,1.5,98.8,1.5,98.8
+	l1.5,9.7V110z"
+  />
+  <path
+    class="filling"
+    d="M3,110c0,0,33-11.3,44.8-11.5c13.3-0.1,39,9.8,52.3,9.8c12.9,0,37.8-9.8,50.7-9.7c12.2,0.1,46.3,11.4,46.3,11.4
+	l1.2-1.6h0.2v-9.7c0,0-55.3-97.3-98.5-97.3C56.8,1.5,1.5,98.8,1.5,98.8l1.5,9.7V110z"
+  />
+  <path class="outline" d="M198.5,110V98.8c0,0-55.3-97.3-98.5-97.3S1.5,98.8,1.5,98.8V110" />
+  <path
+    class="windows"
+    d="M143,61.6l-4.2,15.8c11,3.3,21.2,7.7,21.2,7.7c0-0.4-9-15-12.4-19.2C146.4,64.4,145,63,143,61.6z"
+  />
+  <path
+    class="windows"
+    d="M140.4,59.9c-2.5-1.3-5.8-2.6-10.4-3.9c-11.2-3.2-29-3.3-29-3.3v20.4c0,0,19.9,0,29,2c1.9,0.4,3.9,0.9,5.9,1.5
+	L140.4,59.9z"
+  />
+  <path class="windows" d="M57,61.6c-2,1.4-3.3,2.8-4.6,4.3C49,70.1,40,84.7,40,85.1c0,0,10.2-4.4,21.2-7.7L57,61.6z" />
+  <path
+    class="windows"
+    d="M70,56c-4.6,1.3-7.9,2.6-10.4,3.9l4.5,16.6c2-0.6,4-1.1,5.9-1.5c9.1-2,28-2,28-2V52.7C98,52.7,81.2,52.8,70,56z
+	"
+  />
+  <g>
+    <g>
+      <path class="dotted-line" d="M6.9,108.7c0.1,0,0.3-0.1,0.5-0.1" />
+      <path
+        class="dotted-line"
+        d="M12.9,106.8c10.7-3.4,27.3-8.2,34.9-8.3c13.3-0.1,39,9.8,52.3,9.8c12.9,0,37.8-9.8,50.7-9.7
+			c8.5,0.1,27.8,5.6,38.6,9"
+      />
+      <path class="dotted-line" d="M192.2,108.4c0.2,0,0.3,0.1,0.5,0.1" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,12 @@
+.jets-tail {
+  position: relative;
+  z-index: -1;
+}
+
+.jets-tail:not(.cut) .tail-dotted-line {
+  stroke: none;
+}
+
+.tail-dotted-line {
+    stroke: none;
+}

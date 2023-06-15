@@ -61,9 +61,12 @@ Create your [config](#config) and embed seatmap into your component page via `<J
   availability={availability_data}
   passengers={passengers_data}
   config={config_data}
+  currentDeckIndex={deckIndex}            // could be used to specify rendered deck or to switch decks on the fly from external UI
   onSeatMapInited={seatMapInitedHandler}
   onSeatSelected={seatSelectedHandler}
   onSeatUnselected={seatUnselectedHandler}
+  onLayoutUpdated={layoutUpdatedHandler}
+  onTooltipRequested={tooltipRequestedHandler}
 />
 ```
 
@@ -71,15 +74,20 @@ Create your [config](#config) and embed seatmap into your component page via `<J
 
 ## Properties
 
-Seatmap is able to receive the following properties:
-
-- [flight](#flight)
-- [availability](#availability)
-- [passengers](#passengers)
-- [config](#config)
-- [onSeatMapInited](#seat_map_inited)
-- [onSeatSelected](#seat_selected)
-- [onSeatUnselected](#seat_unselected)
+- [Seatmap integration and communication](#seatmap-integration-and-communication)
+  - [Installation](#installation)
+  - [Integration](#integration)
+  - [Properties](#properties)
+    - [ Flight](#-flight)
+    - [ Availability](#-availability)
+    - [ Passengers](#-passengers)
+    - [ Config](#-config)
+    - [ onSeatMapInited](#-onseatmapinited)
+    - [ onLayoutUpdated](#-onlayoutupdated)
+    - [ onTooltipRequested](#-ontooltiprequested)
+    - [ onSeatSelected](#-onseatselected)
+    - [ onSeatUnselected](#-onseatunselected)
+    
 
 The `flight` prop is requred.
 
@@ -112,7 +120,7 @@ Example of data seatmap receives:
   id: '1111',
   airlineCode: 'BA',
   flightNo: '106',
-  departureDate: '2022-09-28',
+  departureDate: '2023-09-28',
   departure: 'DXB',
   arrival: 'LHR',
   cabinClass: 'E',
@@ -138,10 +146,18 @@ interface IIncomingSeat {
   currency: string;
   label: string;
   price: number;
+  color?: string;                                 // color of the seat
   onlyForPassengerType?: TPassengerType[];
+  additionalProps?: TAdditionalProp[];            // additionalProps from individual seats would exted the list of seat's features
+                                                  // up to 12 features and props could be displayed in tooltip for a seat 
 }
 
 type TSeatAvailability = IIncomingSeat[];
+
+type TAdditionalProp = {
+   label: String; 
+   icon: String;            // suported icons are ["+", "-", "dot", "wifi", "movie", "power"], "dot' is default
+}
 ```
 
 Example of data seatmap receives:
@@ -150,9 +166,24 @@ Example of data seatmap receives:
 [
   {
     currency: 'USD',
+    label: '*',               // properties from wildcard would be used to replace unspecified properties for individual seats
+    price: 33,
+    onlyForPassengerType: ['ADT', 'CHD', 'INF'],
+    additionalProps: [        // additionalProps from wildcard would be merged with specified additionalProps for individual seats (applied to all seats)
+      { label: 'Test prop for all', icon: 'dot' },
+      { label: 'Another test prop for all', icon: 'wifi' },
+    ],
+    color: 'lightgrey'        // all the seats that don't have individual colors set will be colored with wildcard color value
+  },
+  {
+    currency: 'USD',
     label: '20E',
     price: 33,
     onlyForPassengerType: ['ADT', 'CHD', 'INF'],
+    additionalProps: [        
+      { label: 'Local prop', icon: '+' }
+    ],
+    color: 'green'            // individual seat's color
   },
   {
     currency: 'USD',
@@ -181,6 +212,8 @@ override `price` and set it to _75_. You can pass seat with `price` **0**. Also 
 and it would be the same as pass it with **0** value.
 
 If `onlyForPassengerType` field is empty or doesn't exist, then it has no restrictions value by default.
+
+Coloring seats tip: `color` field has next set of priorities: individual > wildcard > internal. If `wildcard` color is present - it's highly recommended to add `color` property to all individual seats for visual distinction.
 
 &nbsp;
 
@@ -281,59 +314,62 @@ interface IConfig {
 
 type TUnit = 'metric' | 'imperials';
 
-type TLang = 'EN' | 'RU' | 'CN' | 'DE' | 'ES' | 'PL';
-
-interface IColorTheme {
-  deckLabelTitleColor: string;
-  deckBodyColor: string;
-  deckBodyWidth: number;
-
-  floorColor: string;
-  seatLabelColor: string;
-  seatStrokeColor: string;
-  seatStrokeWidth: number;
-  seatArmrestColor: string;
-
-  defaultPassengerBadgeColor: string;
-  fontFamily: string;
-
-  tooltipBackgroundColor: string;
-  tooltipHeaderColor: string;
-  tooltipBorderColor: string;
-  tooltipFontColor: string;
-  tooltipIconColor: string;
-  tooltipIconBorderColor: string;
-  tooltipIconBackgroundColor: string;
-  tooltipSelectButtonTextColor: string;
-  tooltipSelectButtonBackgroundColor: string;
-  tooltipCancelButtonTextColor: string;
-  tooltipCancelButtonBackgroundColor: string;
-}
+type TLang = 'CN' | 'DE' | 'EN' | 'ES' | 'PL' | 'RU';
 ```
 
-Customize the color theme, field `colorTheme`, to match your website colors. In the field `colorTheme.fontFamily` - you
-can set any font available at your website.
-
-Example of config data:
+Minimal config could look like this:
 
 ```javascript
-{
-  width: 400;
-  lang: 'RU';
-  units: 'metric';
-  apiUrl: 'https://sandbox.quicket.io/api/v1'
-  apiAppId: 'REPLACE_ME_WITH_YOUR_API_APP_ID',
-  apiKey: 'REPLACE_ME_WITH_YOUR_API_KEY',
-  colorTheme: {
-    deckLabelTitleColor: 'white',
-    deckBodyColor: 'darkgrey',
-    deckBodyWidth: 25,
+width: 400;
+lang: 'EN';
+units: 'metric';
+apiUrl: 'PROVIDED_API_URL',               
+apiAppId: 'PROVIDED_APP_ID',
+apiKey: 'PROVIDED_API_KEY',
+```
 
-    floorColor: 'rgb(30,60,90)',
+Full config looks like this:
+
+```javascript
+
+{
+  width: 400,                               // width of seatmap, height will be dynamic and depends on amount of decks/rows in decks
+                                            // if `horizontal` flag is set to true - height and width will swap around (height being static)
+  lang: 'EN',                                            
+  horizontal: true,                         // should seatmap be rendered horizontally or vertically
+  rightToLeft: false,                       // changes tooltip text alignment (and decks placement) for RTL languages support
+  visibleFuselage: true,                    // should nose and tail graphics be rendered
+  visibleWings: false,                      // should position of wings be shown (helps to see how far/close they are from/to certain seats)
+
+  builtInDeckSelector: false,               // if there's only one deck on the flight it doesn't do anything
+                                            // if there's more it's possible to render all decks at once or only one with ability to switch them
+  singleDeckMode: true,                     // if false, double-deck mode enabled - to show 2 decks at a time, without deck switcher
+
+  builtInTooltip: true,                     // see `onTooltipRequested` section
+  externalPassengerManagement: false,       // see `onTooltipRequested` section
+  tooltipOnHover: false,                    // see `onTooltipRequested` section
+
+  apiUrl: 'PROVIDED_API_URL',               
+  apiAppId: 'PROVIDED_APP_ID',
+  apiKey: 'PROVIDED_API_KEY',
+
+  colorTheme: {                             // most values are CSS-compatible
+    deckLabelTitleColor: 'white',
+    deckHeightSpacing: 100,                 // additional space on both ends of a deck (for aesthetics only)
+
+    wingsWidth: 50,                          
+    deckSeparation: 0,
+
+    floorColor: 'rgb(30,60,90)',            // color of decks floor
     seatLabelColor: 'white',
     seatStrokeColor: 'rgb(237, 237, 237)',
     seatStrokeWidth: 1,
     seatArmrestColor: '#cccccc',
+    notAvailableSeatsColor: 'lightgray',    // fill color for seats that are not available, applied when seat `availability` has been set
+
+    bulkBaseColor : 'dimgrey',              // colors for bulks 
+    bulkCutColor : 'lightgrey',
+    bulkIconColor: 'darkslategray',
 
     defaultPassengerBadgeColor: 'darkred',
     fontFamily: 'Montserrat, sans-serif',
@@ -342,34 +378,29 @@ Example of config data:
     tooltipHeaderColor: '#4f6f8f',
     tooltipBorderColor: 'rgb(255,255,255)',
     tooltipFontColor: '#4f6f8f',
-    tooltipIconColor: '#4f6f8f',
+    tooltipIconColor: '#4f6f8f',            // applied to measurements icons, feature icons have set colors
     tooltipIconBorderColor: '#4f6f8f',
     tooltipIconBackgroundColor: '#fff',
     tooltipSelectButtonTextColor: '#fff',
     tooltipSelectButtonBackgroundColor: 'rgb(42, 85, 128)',
     tooltipCancelButtonTextColor: '#fff',
-    tooltipCancelButtonBackgroundColor: 'rgb(155, 0, 0)',
-  }
-}
-```
+    tooltipCancelButtonBackgroundColor: 'rgb(55, 55, 55)',
 
-By default config looks like:
+    deckSelectorStrokeColor: '#fff',
+    deckSelectorFillColor: 'rgba(55, 55, 55, 0.5)',
+    deckSelectorSize: 25,
 
-```javascript
-width: 300;
-lang: 'EN';
-units: 'metric';
-apiUrl: 'https://sandbox.quicket.io/api/v1'
-apiAppId: '',
-apiKey: '',
-```
+    fuselageStrokeWidth: 16,                // surrounds the whole plane including tail\nose if enabled (min = 10, max = 18)
 
-Api URL and credentials are `required` fields. `If you will not set them - the lib won't work`.
+    fuselageFillColor: 'lightgrey',
+    fuselageStrokeColor: 'darkgrey',
 
-```
-  apiUrl: string;
-  apiAppId: string;
-  apiKey: string;
+    fuselageWindowsColor: 'darkgrey',
+    fuselageWingsColor: 'rgba(55, 55, 55, 0.5)',
+  },
+};
+
+
 ```
 
 If you will not pass `optional config params` then the properties will be set with default values.
@@ -378,13 +409,102 @@ If you will not pass `optional config params` then the properties will be set wi
 
 ### <a name="seat_map_inited"></a> onSeatMapInited
 
-This event fires up when seatmap (DOM tree, content) is initialized.
+This event fires up when seatmap (DOM tree, content) is initialized. It provides internal data such as
+
+```typescript
+interface iInitialLayoutData {
+  currentDeckIndex: number;     // shows current deck if "builtInDeckSelector" flag is set in config, otherwise 0
+  decksCount: number;           // number of decks available for provided flight
+  heightInPx: number;           // sum of lengths of all elements of the plane (decks, fuselage, separators) using internal units. Multiply by "scaleFactor" to get real pixel value on screen
+  scaleFactor: number;          // scale applied to fit into provided boundaries
+  widthInPx: number;            // outer width of the plane. CAUTION: if "horizontal" flag is set - height and width are swapped around to reflect that
+}
+```
+
+&nbsp;
+
+### <a name="layout_updated"></a> onLayoutUpdated
+
+Event is fired after `onSeatMapInited` and on every deck switch if `builtInDeckSelector` flag is set to `true` in config and more than one deck available. See `onSeatMapInited` above
+
+```typescript
+interface iLayoutData {
+  currentDeckIndex: number;     
+  decksCount: number;           
+  heightInPx: number;           // when fired after deck switch - reflects the size of plane with current deck visible, not total length 
+  scaleFactor: number;          
+  widthInPx: number;            
+}
+```
+
+&nbsp;
+
+### <a name="tooltip_requested"></a> onTooltipRequested
+
+Event is fired when user clicks a seat or puts cursor over it (if `tooltipOnHover` flag is set to `true` in config).
+
+If `builtInTooltip` flag is set to `false` - native tooltip will not show up and custom tooltip could be shown based on the event's data.
+
+If `tooltipOnHover` flag is set to `true` user will be able to select/deselect seats by clicking it even if `builtInTooltip` is set to `false`. To disable it completely set `externalPassengerManagement` to `true`
+
+Most usefult behaviors could be covered like this:
+
+| `builtInTooltip` | `tooltipOnHover` | `externalPassengerManagement` | result                                                              |
+| :--------------: | :--------------: | :---------------------------: | ------------------------------------------------------------------- |
+| true             | false            | false                         | native tooltip on `click`, select seat with tooltip buttons
+| true             | true             | false                         | native tooltip on `hover`, select seat by clicking on seat
+| false            | true             | false                         | `no tooltip` shown, `select seat by clicking` on it
+| false            | true             | true                          | `no tooltip`, select/deselect `must be treated externally`
+
+
+```typescript
+interface iTooltipData {
+  element: HTMLElement;       // HTML element of clicked/hovered seat, may be used for tooltip positioning
+  event: DOMEvent;            // DOM event for more precise coordinates processing
+  seat: ISeatData             // detailed seat info, see below
+}
+
+interface ISeatData {
+  additionalProps: ISeatFeature[]   // additional props for seat converted to ISeatFeature, see Availability section 
+  uniqId: string;
+  color: string;                    // how seat is shown on seatmap
+  features: ISeatFeature[];         // seat features like wifi, leg room, etc
+  letter: string;                   // letter in the row
+  measurements: IMeasurement[];     // shown in tooltip
+  status: string;                   // is seat available or not, see Availability section
+  type: string;                     // in most cases just "seat"
+  label: string;                    // includes row number and letter
+  classType: string;                // Economy, Business, etc
+  classCode: string;                // short for classType
+  rowName: string;                  // if rows inside current cabin class have special marks - it would be here ("World Traveller" as an example)
+  seatType: string;                 // format is "classCode-number", number indicates specific code of a seat in class
+}
+
+interface ISeatFeature {
+  icon: string;           // SVG icon for the feature
+  title: string;          // generic name for the feature
+  uniqId: string;
+  value: string;          // text shown in tooltip
+  key: string;            // used to get translated "value" (i18n)
+}
+
+// similar to ISeatFeature but uses different icons and displayed separately in the tooltip
+interface IMeasurement {
+  icon: string;           // SVG icon for the measurement
+  title: string;          // name like "Pitch", "Recline"
+  uniqId: string;
+  value: string;          // value shown in tooltip
+}
+
+```
+
+`Hint:` use [Element.getBoundingClientRect](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) to align custom tooltip to the selected seat.
 
 &nbsp;
 
 ### <a name="seat_selected"></a> onSeatSelected
 
-This event fires up when seat is selected. It provides the array of passengers with seat occupancy data.
+This event fires up when seat is selected. It provides the array of passengers with seat occupancy data. Only when `externalPassengerManagement=false` in config.
 
 Interface, describing data types:
 

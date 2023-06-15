@@ -1,6 +1,6 @@
 {
   "name": "jets-seatmap-react-lib",
-  "version": "2.0.41",
+  "version": "2.1.0",
   "description": "Jets seatmap react library.",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -35,6 +35,7 @@
     "babel-plugin-search-and-replace": "^1.1.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "postcss": "^8.4.12",
+    "prettier": "^2.8.8",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "rollup": "^2.70.2",

@@ -7,7 +7,7 @@ import './index.css';
 const PASSENGER_BADGE_SIZE_COEF = 0.8;
 
 export const JetsSeat = ({ data }) => {
-  const { onSeatClick, params, colorTheme } = useContext(JetsContext);
+  const { onSeatClick, showTooltip, onTooltipClose, params, colorTheme } = useContext(JetsContext);
   const { letter, type, status, size, passenger, color, rotation, seatType, topOffset, leftOffset } = data;
   const { index, aisle } = ENTITY_TYPE_MAP;
   const componentClassNames = `jets-seat jets-${type} jets-${status} jets-seat-r-${rotation}`;
@@ -21,6 +21,7 @@ export const JetsSeat = ({ data }) => {
       left: size.width / 2 - size.width * (PASSENGER_BADGE_SIZE_COEF / 2),
       top: size.height / 2 - size.width * (PASSENGER_BADGE_SIZE_COEF / 2),
       backgroundColor: colorTheme.defaultPassengerBadgeColor,
+      transform: params?.antiRotation,
     };
   });
 
@@ -32,11 +33,17 @@ export const JetsSeat = ({ data }) => {
     return '';
   };
 
+  let rtlStyle = '';
+  if (params?.isHorizontal && (type === aisle || type === index)) {
+    rtlStyle = params.rightToLeft ? '' : 'rotate(180deg)';
+  }
+
   const style = {
     width: size.width,
     height: size.height,
     top: topOffset,
     left: leftOffset,
+    transform: rtlStyle,
   };
 
   const svgStyle = {
@@ -47,7 +54,8 @@ export const JetsSeat = ({ data }) => {
   };
 
   const indexContentStyle = {
-    transform: `rotate(0deg) scale(${params.antiScale})`,
+    transform: `${params?.antiRotation} scale(${params.antiScale})`,
+
     color: colorTheme.seatLabelColor,
   };
 
@@ -78,14 +86,29 @@ export const JetsSeat = ({ data }) => {
     updatePassengerStyle();
   }, [passenger]);
 
+  const onMouseLeave = e => {
+    if (!e?.relatedTarget?.className?.includes('tooltip')) {
+      onTooltipClose();
+    }
+  };
+
   return (
-    <div ref={$component} style={style} className={componentClassNames} onClick={e => onSeatClick(data, $component, e)}>
+    <div
+      ref={$component}
+      style={style}
+      className={componentClassNames}
+      onClick={e => onSeatClick(data, $component, e)}
+      onMouseEnter={params.tooltipOnHover ? e => showTooltip(data, $component, e) : null}
+      onMouseLeave={params.tooltipOnHover ? onMouseLeave : null}
+    >
       {seatType && type !== index ? (
         <>
           <SeatIcon seatType={seatType} style={svgStyle} />
           {passenger && (
             <div className="jets-seat-passenger" style={passengerStyle}>
-              {getSeatContent()}
+              <div style={{ transform: params?.isHorizontal && !params?.rightToLeft ? 'rotate(180deg)' : '' }}>
+                {getSeatContent()}
+              </div>
             </div>
           )}
         </>

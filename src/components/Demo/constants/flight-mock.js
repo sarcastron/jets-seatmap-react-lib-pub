@@ -7,7 +7,6 @@ const FLIGHT_MOCK1 = {
   arrival: 'EWR',
   cabinClass: 'B',
   passengerType: 'ADT',
-  planeCode: null,
 };
 
 const FLIGHT_MOCK2 = {
@@ -19,7 +18,6 @@ const FLIGHT_MOCK2 = {
   arrival: 'DXB',
   cabinClass: 'B',
   passengerType: 'ADT',
-  planeCode: null,
 };
 
 const FLIGHT_MOCK = {
@@ -31,7 +29,16 @@ const FLIGHT_MOCK = {
   arrival: 'LHR',
   cabinClass: 'E',
   passengerType: 'ADT',
-  planeCode: null,
+};
+
+const FLIGHT_MOCK4 = {
+  id: '1111',
+  airlineCode: 'AA',
+  flightNo: '2622',
+  departureDate: '2023-06-27',
+  departure: 'JFK',
+  arrival: 'MIA',
+  cabinClass: 'B',
 };
 
 export default FLIGHT_MOCK;

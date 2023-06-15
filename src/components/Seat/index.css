@@ -10,8 +10,6 @@
 .jets-unavailable {
   position: relative;
   cursor: not-allowed;
-  /* opacity: 0.3; */
-  filter: grayscale(0.9);
 }
 
 .jets-available {
@@ -29,27 +27,47 @@
 .jets-index,
 .jets-empty {
   pointer-events: none;
-  transform: rotate(0) !important;
+  /* transform: rotate(0) !important; */
 }
 
 .jets-seat-r-nw {
   transform: scale(0.8) rotate(-20deg);
 }
 
+.jets-seat-r-nw > .jets-seat-passenger {
+  transform: rotate(20deg);
+}
+
 .jets-seat-r-ne {
   transform: scale(0.8) rotate(20deg);
+}
+
+.jets-seat-r-ne > .jets-seat-passenger {
+  transform: rotate(-20deg);
 }
 
 .jets-seat-r-s {
   transform: rotate(180deg);
 }
 
+.jets-seat-r-s > .jets-seat-passenger {
+  transform: rotate(-180deg);
+}
+
 .jets-seat-r-se {
   transform: scale(0.8) rotate(160deg);
 }
 
+.jets-seat-r-se > .jets-seat-passenger {
+  transform: rotate(-160deg);
+}
+
 .jets-seat-r-sw {
   transform: scale(0.8) rotate(-160deg);
+}
+
+.jets-seat-r-sw > .jets-seat-passenger {
+  transform: rotate(160deg);
 }
 
 svg {
@@ -64,6 +82,10 @@ svg {
   justify-content: center;
   align-items: center;
   font-size: 36px;
+}
+
+.jets-seat-r-s > .jets-seat-passenger {
+  transform: rotate(-180deg);
 }
 
 .jets-seat-svg {
