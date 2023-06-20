@@ -63,8 +63,12 @@ export const JetsBulk = ({ id, type, align, width, height, iconType, xOffset, to
   }, []);
 
   let coloredBulkSVG = BULK_TEMPLATE_MAP.get(id);
-  coloredBulkSVG = coloredBulkSVG.replace('$baseColor', bulkBaseColor);
-  coloredBulkSVG = coloredBulkSVG.replace('$cutColor', bulkCutColor);
+  if (!coloredBulkSVG) {
+    console.log('coloredBulkSVG is not found:', id);
+    return <div className="bulk" ref={$component}></div>;
+  }
+  coloredBulkSVG = coloredBulkSVG?.replace('$baseColor', bulkBaseColor);
+  coloredBulkSVG = coloredBulkSVG?.replace('$cutColor', bulkCutColor);
 
   return (
     <div className="bulk" style={style} ref={$component}>

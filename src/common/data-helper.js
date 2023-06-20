@@ -1,4 +1,9 @@
-import { DEFAULT_DECK_PADDING_SIZE, THEME_FUSELAGE_OUTLINE_WIDTH, FUSELAGE_HEIGHT_TO_WIDTH_RATIO } from '.';
+import {
+  DEFAULT_DECK_PADDING_SIZE,
+  THEME_FUSELAGE_OUTLINE_WIDTH,
+  FUSELAGE_HEIGHT_TO_WIDTH_RATIO,
+  ENTITY_TYPE_MAP,
+} from '.';
 
 export class JetsDataHelper {
   constructor() {}
@@ -76,7 +81,41 @@ export class JetsDataHelper {
       return bSeatsCount - aSeatsCount;
     });
 
-    return sorted[0];
+    return this.assignAllLettersForBiggestRow(sorted[0], rows);
+  };
+
+  assignAllLettersForBiggestRow = (biggestRow, rows) => {
+    const biggestRowCopy = { ...biggestRow, seats: biggestRow.seats.map(seat => ({ ...seat })) };
+    try {
+      const biggestRowLetters = this.rowLetters(biggestRowCopy);
+
+      const otherLettersRow = rows.find(row => {
+        if (row.seatScheme === biggestRowCopy.seatScheme) {
+          const rowLetters = this.rowLetters(row);
+          if (biggestRowLetters !== rowLetters) {
+            return row;
+          }
+        }
+      });
+
+      if (otherLettersRow) {
+        biggestRowCopy.seats.forEach((element, index) => {
+          element.letter = `${element.letter} - ${otherLettersRow.seats[index].letter}`;
+        });
+      }
+    } catch (error) {
+      console.error('Error at assignAllLettersForBiggestRow', error);
+    }
+
+    return biggestRowCopy;
+  };
+
+  rowLetters = row => {
+    const knownElementTypes = {
+      [ENTITY_TYPE_MAP.aisle]: '-',
+      [ENTITY_TYPE_MAP.empty]: ' ',
+    };
+    return row.seats.map(element => knownElementTypes[element.type] || element.letter).join();
   };
 
   getDefaultSeatSizeByClass = classCode => {

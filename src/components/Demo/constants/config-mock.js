@@ -57,7 +57,7 @@ const CONFIG_MOCK = {
     deckSelectorFillColor: 'rgba(55, 55, 55, 0.5)',
     deckSelectorSize: 30,
 
-    fuselageStrokeWidth: 16,
+    fuselageStrokeWidth: 10,
 
     fuselageFillColor: 'lightgrey',
     fuselageStrokeColor: 'darkgrey',
