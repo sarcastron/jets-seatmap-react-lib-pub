@@ -88,11 +88,11 @@ export const DEFAULT_FEATURES_RENDER_LIMIT = 12;
 export const FUSELAGE_HEIGHT_TO_WIDTH_RATIO = 2.4;
 
 export const SEAT_SIZE_BY_TYPE = [
-  [86, 100],
-  [144, 218],
+  [100, 100],
+  [122, 218],
   [160, 180],
-  [106, 160],
-  [122, 220],
+  [100, 100],
+  [122, 200],
   [200, 200],
   [200, 200],
   [140, 200],

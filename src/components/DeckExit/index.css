@@ -1,8 +1,8 @@
 .deck-exit {
   position: absolute;
-
   width: 72px;
   height: 72px;
+  z-index: -1;
 }
 
 .deck-bulk__image {

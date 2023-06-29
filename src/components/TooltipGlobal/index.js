@@ -56,29 +56,32 @@ export const JetsTooltipGlobal = ({ data }) => {
     additionalProps,
   } = data;
 
+  // TOD rewrite this
   const pointerHeight = 14;
   const pointerWidth = 16;
+  const pointerCSSOffset = -16;
   const seatHeight = data.size.height / antiScale;
   const seatWidth = data.size.width / antiScale;
+
+  const widthDiff = (seatWidth - pointerWidth + pointerCSSOffset / 2) / 2;
 
   const parentRow = seatNode.closest('.jets-row');
   const parentRowRect = parentRow.getBoundingClientRect();
 
   const seatRect = seatNode.getBoundingClientRect();
   const seatmapRect = seatmapElement.getBoundingClientRect();
+  const seatmapParentRect = seatmapElement.parentElement.getBoundingClientRect();
 
   const seatY = seatRect.top - seatmapRect.top;
   const seatX = seatRect.left - seatmapRect.left;
   const rowY = parentRowRect.top - document.body.getBoundingClientRect().top;
-
-  const seatmapParentRect = seatmapElement.parentElement.getBoundingClientRect();
 
   const keyForPosition = params?.isHorizontal ? 'left' : 'top';
   const keyForSize = params?.isHorizontal ? 'width' : 'height';
   const seatmapParentCenter = seatmapParentRect[keyForPosition] + seatmapParentRect[keyForSize] * 0.5;
 
   const allowedLeft = tooltipWidth < seatX;
-  const allowedRight = (seatX + tooltipWidth) < seatmapRect.width;
+  // const allowedRight = seatX + tooltipWidth < seatmapRect.width;
   const preferredLeft = parentRowRect[keyForPosition] > seatmapParentCenter;
 
   const negatePositionVertical = Number(rowY > tooltipHeight);
@@ -88,7 +91,7 @@ export const JetsTooltipGlobal = ({ data }) => {
 
   const posDiff = Math.min(relativeSeatY - pointerWidth, 0);
 
-  const horizontalPointerOffset = tooltipHeight - relativeSeatY + posDiff;
+  const horizontalPointerOffset = tooltipHeight - relativeSeatY + posDiff - pointerCSSOffset / 6;
 
   const styleLeft = seatX + seatHeight - (tooltipWidth + seatHeight + pointerHeight) * negatePositionHorizontal;
   const styleTop = seatY + seatHeight - (tooltipHeight + seatHeight + pointerHeight) * negatePositionVertical;
@@ -111,13 +114,13 @@ export const JetsTooltipGlobal = ({ data }) => {
 
   const pointerStyle = {
     top: negatePositionVertical * tooltipHeight,
-    left: seatX,
+    left: seatX + widthDiff,
     transform: `rotate(${180 * (1 - negatePositionVertical)}deg)`,
     borderColor: `${tooltipBorderColor} transparent transparent transparent`,
     display: params?.isHorizontal ? 'none' : '',
   };
 
-  const pointerLeftPercentage = params?.rightToLeft ? negatePositionHorizontal : 1 - negatePositionHorizontal;
+  // const pointerLeftPercentage = params?.rightToLeft ? negatePositionHorizontal : 1 - negatePositionHorizontal;
 
   const pointerStyleHorizontal = {
     left: `${negatePositionHorizontal * 100}%`,
@@ -166,7 +169,7 @@ export const JetsTooltipGlobal = ({ data }) => {
       className={`jets-tooltip ${params?.isHorizontal ? 'horizontal' : ''}`}
       // className={`jets-tooltip`}
       ref={elementRef}
-      onMouseLeave={params.tooltipOnHover ? onTooltipClose : null}
+      onMouseLeave={params.tooltipOnHover ? e => onTooltipClose(null, null, e) : null}
     >
       <div className="jets-tooltip--arrow-pointer" style={pointerStyle}></div>
       <div className="jets-tooltip--arrow-pointer-horizontal" style={pointerStyleHorizontal}></div>
@@ -233,7 +236,7 @@ export const JetsTooltipGlobal = ({ data }) => {
 
         <div className="jets-tooltip--btns-block">
           <JetsButton
-            onClick={onTooltipClose}
+            onClick={e => onTooltipClose(null, null, e)}
             content={LOCALES_MAP[lang][CANCEL_BTN_KEY]}
             className="jets-btn jets-tooltip--btn"
             style={{ color: tooltipCancelButtonTextColor, backgroundColor: tooltipCancelButtonBackgroundColor }}

@@ -86,9 +86,9 @@ export const JetsSeat = ({ data }) => {
     updatePassengerStyle();
   }, [passenger]);
 
-  const onMouseLeave = e => {
+  const onMouseLeave = (data, $component, e) => {
     if (!e?.relatedTarget?.className?.includes('tooltip')) {
-      onTooltipClose();
+      onTooltipClose(data, $component, e);
     }
   };
 
@@ -99,7 +99,7 @@ export const JetsSeat = ({ data }) => {
       className={componentClassNames}
       onClick={e => onSeatClick(data, $component, e)}
       onMouseEnter={params.tooltipOnHover ? e => showTooltip(data, $component, e) : null}
-      onMouseLeave={params.tooltipOnHover ? onMouseLeave : null}
+      onMouseLeave={params.tooltipOnHover ? e => onMouseLeave(data, $component, e) : null}
     >
       {seatType && type !== index ? (
         <>

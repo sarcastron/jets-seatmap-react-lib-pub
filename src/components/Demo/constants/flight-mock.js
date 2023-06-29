@@ -13,7 +13,7 @@ const FLIGHT_MOCK2 = {
   id: '1111',
   airlineCode: 'EK',
   flightNo: '2',
-  departureDate: '2023-05-16',
+  departureDate: '2023-06-19',
   departure: 'LHR',
   arrival: 'DXB',
   cabinClass: 'B',
@@ -39,6 +39,28 @@ const FLIGHT_MOCK4 = {
   departure: 'JFK',
   arrival: 'MIA',
   cabinClass: 'B',
+};
+
+const FLIGHT_MOCK5 = {
+  id: '1111',
+  airlineCode: 'MX',
+  flightNo: '100',
+  departureDate: '2023-09-11',
+  departure: 'CHS',
+  arrival: 'CAK',
+  cabinClass: 'E',
+  passengerType: 'ADT',
+};
+
+const FLIGHT_MOCK6 = {
+  id: '111',
+  airlineCode: 'LH',
+  flightNo: '2470',
+  departureDate: '2023-08-25',
+  departure: 'MUC',
+  arrival: 'LHR',
+  cabinClass: 'E',
+  planeCode: '',
 };
 
 export default FLIGHT_MOCK;

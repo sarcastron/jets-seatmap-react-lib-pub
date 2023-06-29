@@ -123,7 +123,7 @@ const premiumClassTemplates = {
 
 const economyClassTemplates = {
   getTemplate(style) {
-    return `<svg version="1.1" baseProfile="full" viewBox="0 -3 110 110" width="86" height="110" xmlns="http://www.w3.org/2000/svg">
+    return `<svg version="1.1" baseProfile="full" viewBox="0 -3 110 100" width="86" height="100" xmlns="http://www.w3.org/2000/svg">
         <g class="seat" transform="scale(2)">
         <rect fill="${style.armrestColor}" y="4.3" width="5.36" height="32.29" rx="1.97" ry="1.97" />
         <rect fill="${style.armrestColor}" x="49.02" y="4.3" width="5.36" height="32.29" rx="1.97" ry="1.97" />

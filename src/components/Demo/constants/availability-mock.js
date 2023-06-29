@@ -8,7 +8,7 @@ const AVAILABILITY_MOCK = [
       { label: 'Test prop for all', icon: null },
       { label: 'Another test prop for all', icon: 'wifi' },
     ],
-    color: 'lightgrey',
+    color: 'green',
   },
   {
     currency: 'USD',

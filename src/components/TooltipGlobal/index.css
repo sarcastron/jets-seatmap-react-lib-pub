@@ -99,7 +99,6 @@
 
 .jets-tooltip--arrow-pointer {
   position: absolute;
-
   margin: 0 0 0 -16px;
   width: 0;
   height: 0;
@@ -130,7 +129,6 @@
 }
 
 .jets-tooltip--measurement {
-
   border-radius: 6px;
   border-width: 1px;
   border-style: solid;

@@ -70,6 +70,8 @@ export const JetsSeatMap = ({
   onSeatUnselected,
   onTooltipRequested,
   onLayoutUpdated,
+  onSeatMouseLeave,
+  onSeatMouseClick,
 }) => {
   const colorTheme = JetsDataHelper.mergeColorThemeWithConstraints(
     JetsSeatMap.defaultProps.config.colorTheme,
@@ -196,6 +198,10 @@ export const JetsSeatMap = ({
     const shouldSelectOnClick = params?.tooltipOnHover && !params?.isTouchDevice;
     if (shouldSelectOnClick) {
       if (params.externalPassengerManagement) {
+        // if (!params.builtInTooltip) {
+        const seat = prepareSeatDataForEmit(data);
+        onSeatMouseClick({ seat, element: element.current, event: event.nativeEvent });
+        // }
         return;
       }
 
@@ -227,22 +233,19 @@ export const JetsSeatMap = ({
     onLayoutUpdated(data);
   };
 
-  const emitSeatDataForExternalManagement = (data, element, event) => {
+  const prepareSeatDataForEmit = data => {
     const tmpData = { ...data, label: data.number };
     delete tmpData.number;
     delete tmpData.leftOffset;
     delete tmpData.topOffset;
     delete tmpData.size;
 
-    onTooltipRequested({
-      seat: tmpData,
-      element: element.current,
-      event: event.nativeEvent,
-    });
+    return tmpData;
   };
 
   const showTooltip = (data, element, event) => {
-    emitSeatDataForExternalManagement(data, element, event);
+    const seat = prepareSeatDataForEmit(data);
+    onTooltipRequested({ seat, element: element.current, event: event.nativeEvent });
 
     if (!params.builtInTooltip) {
       return;
@@ -287,7 +290,11 @@ export const JetsSeatMap = ({
     onSeatUnselected(newPassangers);
   };
 
-  const onTooltipClose = () => {
+  const onTooltipClose = (data, element, event) => {
+    if (data && element) {
+      const seat = prepareSeatDataForEmit(data);
+      onSeatMouseLeave({ seat, element: element.current, event: event.nativeEvent });
+    }
     setActiveTooltip(null);
   };
 
@@ -429,5 +436,11 @@ JetsSeatMap.defaultProps = {
   },
   onLayoutUpdated: data => {
     console.log('Layout updated: ', data);
+  },
+  onSeatMouseLeave: data => {
+    console.log('Seat mouse leave: ', data);
+  },
+  onSeatMouseClick: data => {
+    console.log('Seat mouse click: ', data);
   },
 };

@@ -10,10 +10,10 @@ const CONFIG_MOCK = {
   builtInDeckSelector: true,
   singleDeckMode: true,
 
-  builtInTooltip: true,
-  externalPassengerManagement: false,
+  builtInTooltip: false,
+  externalPassengerManagement: true,
+  tooltipOnHover: true,
 
-  tooltipOnHover: false,
   lang: 'EN',
 
   apiUrl: process.env.JETS_BASE_API_URL,
@@ -22,7 +22,7 @@ const CONFIG_MOCK = {
 
   colorTheme: {
     deckLabelTitleColor: 'white',
-    deckHeightSpacing: 100,
+    deckHeightSpacing: 0,
 
     wingsWidth: 50,
     deckSeparation: 0,
@@ -57,7 +57,7 @@ const CONFIG_MOCK = {
     deckSelectorFillColor: 'rgba(55, 55, 55, 0.5)',
     deckSelectorSize: 30,
 
-    fuselageStrokeWidth: 16,
+    fuselageStrokeWidth: 10,
 
     fuselageFillColor: 'lightgrey',
     fuselageStrokeColor: 'darkgrey',
