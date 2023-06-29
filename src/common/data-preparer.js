@@ -189,10 +189,10 @@ export class JetsContentPreparer {
     const deckA = 0;
     const deckB = deckHeight;
 
-    const min1 = Math.min(wingA, wingB);
-    const max1 = Math.max(wingA, wingB);
-    const min2 = Math.min(deckA, deckB);
-    const max2 = Math.min(deckA, deckB);
+    // const min1 = Math.min(wingA, wingB);
+    // const max1 = Math.max(wingA, wingB);
+    // const min2 = Math.min(deckA, deckB);
+    // const max2 = Math.min(deckA, deckB);
 
     intersection.start = Math.max(deckA, wingA);
     intersection.finish = Math.min(deckB, wingB);
