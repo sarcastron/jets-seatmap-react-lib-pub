@@ -87,6 +87,8 @@ Create your [config](#config) and embed seatmap into your component page via `<J
     - [ onTooltipRequested](#-ontooltiprequested)
     - [ onSeatSelected](#-onseatselected)
     - [ onSeatUnselected](#-onseatunselected)
+    - [ onSeatMouseLeave](#-onseatmouseleave)
+    - [ onSeatMouseClick](#-onseatmouseclick)
     
 
 The `flight` prop is requred.
@@ -543,3 +545,11 @@ interface ISeat {
   seatLabel: string;
 }
 ```
+
+### <a name="onseatmouseleave"></a> onSeatMouseLeave
+
+This event fires up when cursor leave seat boudaries. It provides the same data like [onTooltipRequested](#-ontooltiprequested).
+
+### <a name="onseatmouseclick"></a> onSeatMouseClick
+
+This event is triggered when the mouse is clicked on the seat, but only `externalPassengerManagement == true && tooltipOnHover == true`. It provides the same data like [onTooltipRequested](#-ontooltiprequested).
