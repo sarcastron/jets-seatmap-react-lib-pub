@@ -40,6 +40,7 @@ const SEAT_MEASUREMENTS_ICONS = {
 
 export class JetsContentPreparer {
   _dataHelper = null;
+  _deckTitleHeight = 0;
 
   constructor() {
     this._dataHelper = new JetsDataHelper();
@@ -52,6 +53,7 @@ export class JetsContentPreparer {
     const decks = seatDetails?.decks;
 
     const isDeckExist = decks && decks.length;
+    this._deckTitleHeight = decks && decks.length > 1 ? DEFAULT_DECK_TITLE_HEIGHT : 0;
 
     const preparedBulks = isDeckExist ? this._prepareBulks(decks) : [];
     const preparedExits = isDeckExist ? this._prepareExits(decks) : [];
@@ -99,35 +101,37 @@ export class JetsContentPreparer {
   }
 
   _prepareExits(decks) {
-    return this._updateAllDeckItemsTopOffset(decks, 'exits', DEFAULT_DECK_TITLE_HEIGHT + DEFAULT_INDEX_ROW_HEIGHT);
+    return this._updateAllDeckItemsTopOffset(decks, 'exits');
   }
 
   _prepareBulks(decks) {
-    return this._updateAllDeckItemsTopOffset(decks, 'bulks', DEFAULT_DECK_TITLE_HEIGHT + DEFAULT_INDEX_ROW_HEIGHT);
+    return this._updateAllDeckItemsTopOffset(decks, 'bulks');
   }
 
-  _getDeckOffset(deck) {
-    const bulksOffset = deck['bulks'].reduce((acc, deckItem) => {
-      return deckItem.topOffset < acc ? deckItem.topOffset : acc;
+  _getFirstElementDeckOffset(deck) {
+    const bulksMinOffset = deck['bulks'].reduce((minimum, deckItem) => {
+      return deckItem.topOffset < minimum ? deckItem.topOffset : minimum;
     }, 0);
-    const exitsOffset = deck['exits'].reduce((acc, deckItem) => {
-      return deckItem.topOffset < acc ? deckItem.topOffset : acc;
+    const exitsMinOffset = deck['exits'].reduce((minimum, deckItem) => {
+      return deckItem.topOffset < minimum ? deckItem.topOffset : minimum;
     }, 0);
 
-    return Math.min(bulksOffset, exitsOffset);
+    const firstElementOffset = Math.min(bulksMinOffset, exitsMinOffset);
+    const offset = firstElementOffset < 0 ? -firstElementOffset : firstElementOffset;
+    return offset + this._deckTitleHeight + DEFAULT_INDEX_ROW_HEIGHT;
   }
 
-  _updateAllDeckItemsTopOffset(decks, itemsName, offset = 0) {
+  _updateAllDeckItemsTopOffset(decks, itemsName) {
     return decks.map(deck => {
-      const offset = this._getDeckOffset(deck, itemsName);
-      return this._updateDeckItemsTopOffset(deck, itemsName, -offset);
+      const firstElementOffset = this._getFirstElementDeckOffset(deck);
+      return this._updateDeckItemsTopOffset(deck, itemsName, firstElementOffset);
     });
   }
 
   _updateDeckItemsTopOffset(deck, itemsName, offset = 0) {
     return deck[itemsName].map(deckItem => {
       const updatedItem = { ...deckItem, uniqId: Utils.generateId() };
-      const updatedTopOffset = updatedItem.topOffset + offset + DEFAULT_DECK_TITLE_HEIGHT + DEFAULT_INDEX_ROW_HEIGHT;
+      const updatedTopOffset = updatedItem.topOffset + offset;
 
       updatedItem.topOffset = updatedTopOffset;
 
@@ -140,12 +144,10 @@ export class JetsContentPreparer {
 
     const preparedBiggestDeckRow = this._prepareRow(biggestDeckRow, cabinFeatures, config.lang);
     const innerDeckWidth = this._dataHelper.getDeckInnerWidth(preparedBiggestDeckRow.width, config);
-
     const indexRow = this._prepareIndexRow(preparedBiggestDeckRow);
+    const firstElementOffset = this._getFirstElementDeckOffset(deck);
 
-    const offset = this._getDeckOffset(deck);
-
-    const rows = this._prepareRows(deck.rows, cabinFeatures, config.lang, -offset);
+    const rows = this._prepareRows(deck.rows, cabinFeatures, config.lang, firstElementOffset);
 
     const deckHeight = this._dataHelper.calculateDeckHeight(rows, preparedBulks, preparedExits);
 
@@ -189,10 +191,10 @@ export class JetsContentPreparer {
     const deckA = 0;
     const deckB = deckHeight;
 
-    // const min1 = Math.min(wingA, wingB);
-    // const max1 = Math.max(wingA, wingB);
-    // const min2 = Math.min(deckA, deckB);
-    // const max2 = Math.min(deckA, deckB);
+    const min1 = Math.min(wingA, wingB);
+    const max1 = Math.max(wingA, wingB);
+    const min2 = Math.min(deckA, deckB);
+    const max2 = Math.min(deckA, deckB);
 
     intersection.start = Math.max(deckA, wingA);
     intersection.finish = Math.min(deckB, wingB);
@@ -210,7 +212,7 @@ export class JetsContentPreparer {
 
   _prepareRow = (row, cabinFeatures, lang, offset) => {
     const { number, topOffset, seatScheme, classCode, seatType } = row;
-    const _topOffset = topOffset + offset + DEFAULT_DECK_TITLE_HEIGHT + DEFAULT_INDEX_ROW_HEIGHT;
+    const _topOffset = topOffset + offset;
     const preparedSeats = this._prepareSeats(row, cabinFeatures, lang);
     const rowWidth = preparedSeats.map(seat => seat.size.width).reduce((a, b) => a + b, 0);
 
@@ -272,7 +274,7 @@ export class JetsContentPreparer {
       return element;
     });
 
-    return { ...row, number: '', seats, topOffset: DEFAULT_DECK_TITLE_HEIGHT };
+    return { ...row, number: '', seats, topOffset: this._deckTitleHeight };
   };
 
   _prepareSeat = (seat, row, cabinFeatures, lang) => {

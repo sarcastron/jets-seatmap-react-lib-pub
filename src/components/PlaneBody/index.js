@@ -50,7 +50,7 @@ export const JetsPlaneBody = ({ activeDeck, content, exits, bulks, isSeatMapInit
   const isTailFull = true;
   const isNoseFull = true;
 
-  const isSingleDeck = decks?.length == 1
+  const isSingleDeck = decks?.length == 1;
 
   return (
     <div className={`jets-plane-body`} style={style}>
@@ -88,7 +88,7 @@ export const JetsPlaneBody = ({ activeDeck, content, exits, bulks, isSeatMapInit
                     exits={exits[deck.number - 1]}
                     bulks={bulks[deck.number - 1]}
                     style={{ position: 'absolute' }}
-                    hideDeckTitle={isSingleDeck}
+                    isSingleDeck={isSingleDeck}
                   />
                 </div>
 

@@ -399,10 +399,22 @@ Full config looks like this:
 
     fuselageWindowsColor: 'darkgrey',
     fuselageWingsColor: 'rgba(55, 55, 55, 0.5)',
+
+    exitIconUrlLeft: 'https://panorama.quicket.io/icons/exit-left.svg', // URL to override built-in left exit icon, optional
+    exitIconUrlRight: 'https://panorama.quicket.io/icons/exit-right.svg', // URL to override built-in right exit icon, optional
   },
 };
 
+```
 
+To override exits need to set `both` fields in the config - `exitIconUrlLeft` && `exitIconUrlRight` + define CSS style for exits:
+
+```css
+.deck-exit__image {
+  /* custom size, for instance */
+  width: 72px; 
+  height: 72px;
+}
 ```
 
 If you will not pass `optional config params` then the properties will be set with default values.

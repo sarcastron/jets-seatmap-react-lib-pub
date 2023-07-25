@@ -21,15 +21,15 @@ const CONFIG_MOCK = {
   apiKey: process.env.JETS_PRIVATE_KEY,
 
   colorTheme: {
-    deckLabelTitleColor: 'white',
+    deckLabelTitleColor: 'black',
     deckHeightSpacing: 0,
 
     wingsWidth: 50,
     deckSeparation: 0,
 
-    floorColor: 'rgb(30,60,90)',
-    seatLabelColor: 'white',
-    seatStrokeColor: 'rgb(237, 237, 237)',
+    floorColor: 'rgb(178,178,188)',
+    seatLabelColor: 'black',
+    seatStrokeColor: 'rgb(230, 230, 230)',
     seatStrokeWidth: 1,
     seatArmrestColor: '#cccccc',
     notAvailableSeatsColor: 'dimgrey',
@@ -64,6 +64,9 @@ const CONFIG_MOCK = {
 
     fuselageWindowsColor: 'darkgrey',
     fuselageWingsColor: 'rgba(55, 55, 55, 0.5)',
+
+    exitIconUrlLeft: 'https://panorama.quicket.io/icons/exit-left.svg',
+    exitIconUrlRight: 'https://panorama.quicket.io/icons/exit-right.svg',
   },
 };
 

@@ -420,6 +420,8 @@ JetsSeatMap.defaultProps = {
       deckSelectorStrokeColor: THEME_DECK_SELECTOR_STROKE_COLOR,
       deckSelectorFillColor: THEME_DECK_SELECTOR_FILL_COLOR,
       deckSelectorSize: THEME_DECK_SELECTOR_SIZE,
+      exitIconUrlLeft: null,
+      exitIconUrlRight: null,
     },
   },
   onSeatMapInited: data => {

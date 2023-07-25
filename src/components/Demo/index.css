@@ -19,12 +19,12 @@
 .jets-demo--seat-map::-webkit-scrollbar-thumb {
   border-radius: 8px;
   border: 2px solid white;
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, 0.5);
 }
-.jets-demo--seat-map::-webkit-scrollbar-track { 
-  background-color: #fff; 
-  border-radius: 8px; 
-} 
+.jets-demo--seat-map::-webkit-scrollbar-track {
+  background-color: #fff;
+  border-radius: 8px;
+}
 
 .jets-demo--seat-map {
   width: 70%;
@@ -62,4 +62,9 @@
   width: 25%;
   height: 100%;
   font-family: 'Montserrat', monospace;
+}
+
+.deck-exit__image {
+  width: 72px;
+  height: 72px;
 }
