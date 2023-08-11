@@ -8,7 +8,7 @@ const PASSENGER_BADGE_SIZE_COEF = 0.8;
 
 export const JetsSeat = ({ data }) => {
   const { onSeatClick, showTooltip, onTooltipClose, params, colorTheme } = useContext(JetsContext);
-  const { letter, type, status, size, passenger, color, rotation, seatType, topOffset, leftOffset } = data;
+  const { letter, type, status, size, passenger, color, rotation, seatType, topOffset, leftOffset, number } = data;
   const { index, aisle } = ENTITY_TYPE_MAP;
   const componentClassNames = `jets-seat jets-${type} jets-${status} jets-seat-r-${rotation}`;
 
@@ -94,6 +94,7 @@ export const JetsSeat = ({ data }) => {
 
   return (
     <div
+      id={`seat-${number || type}`}
       ref={$component}
       style={style}
       className={componentClassNames}

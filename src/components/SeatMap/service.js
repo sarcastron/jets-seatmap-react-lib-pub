@@ -1,5 +1,4 @@
 import {
-  DEFAULT_FEATURES_LIST,
   ENTITY_STATUS_MAP,
   ENTITY_TYPE_MAP,
   JetsLocalStorageService,
@@ -20,10 +19,7 @@ export class JetsSeatMapService {
 
   getSeatMapData = async (flight, availability, passengers, config) => {
     const { lang, units } = config;
-    const planeFeatures = await this._api.getPlaneFeatures(flight, DEFAULT_FEATURES_LIST, lang, units).catch(err => {
-      console.error(`getSeatMapData ${err}`);
-      return null;
-    });
+    const planeFeatures = await this._api.getPlaneFeatures(flight, lang, units);
 
     let { content, params, exits, bulks } = this._preparer.prepareData(planeFeatures, config);
 

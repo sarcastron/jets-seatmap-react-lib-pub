@@ -1,5 +1,5 @@
 import { JetsApiService } from '../../common/api';
-import { DEFAULT_FEATURES_LIST, DEFAULT_LANG, DEFAULT_UNITS } from '../../common';
+import { DEFAULT_LANG, DEFAULT_UNITS } from '../../common';
 
 const API_SUPPORTED_LANGUAGES = ['EN', 'DE', 'RU', 'CN', 'ES', 'FR', 'IT', 'NO', 'DA', 'SV', 'PL'];
 
@@ -8,17 +8,12 @@ export class JetsSeatMapApiService extends JetsApiService {
     super(appId, key, url, localStorage);
   }
 
-  getPlaneFeatures = async (
-    flight,
-    featuresList = DEFAULT_FEATURES_LIST,
-    lang = DEFAULT_LANG,
-    units = DEFAULT_UNITS
-  ) => {
+  getPlaneFeatures = async (flight, lang = DEFAULT_LANG, units = DEFAULT_UNITS) => {
     const language = API_SUPPORTED_LANGUAGES.includes(lang) ? lang : DEFAULT_LANG;
 
-    const data = { flights: [flight], featuresList, lang: language, units };
+    const data = { flight, lang: language, units };
 
-    const path = 'flight/features/plane';
+    const path = 'flight/features/plane/seatmap';
     const response = await this.postData(path, data);
 
     const planeFeatures = response.find(item => item.id === flight.id);

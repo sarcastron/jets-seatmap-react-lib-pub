@@ -10,9 +10,9 @@ const CONFIG_MOCK = {
   builtInDeckSelector: true,
   singleDeckMode: true,
 
-  builtInTooltip: false,
-  externalPassengerManagement: true,
-  tooltipOnHover: true,
+  builtInTooltip: true,
+  externalPassengerManagement: false,
+  tooltipOnHover: false,
 
   lang: 'EN',
 

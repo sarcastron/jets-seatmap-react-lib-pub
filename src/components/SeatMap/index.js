@@ -102,23 +102,37 @@ export const JetsSeatMap = ({
     let isMounted = true;
 
     if (flight?.id) {
-      service.getSeatMapData(flight, availability, passengers, configuration).then(data => {
-        if (isMounted) {
-          setParams(data.params);
-          setContent(data.content);
-          setExits(data.exits);
-          setBulks(data.bulks);
-          setSeatMapInited(true);
-          onSeatMapInited({
-            heightInPx: data.params?.isHorizontal ? data.params?.innerWidth : data.params?.totalDecksHeight,
-            widthInPx: data.params?.isHorizontal ? data.params?.totalDecksHeight : data.params?.innerWidth,
-            scaleFactor: data.params?.scale,
-            decksCount: data.content?.length,
-            currentDeckIndex: activeDeck,
-          });
-          hasReceivedFirstParams.current = false;
-        }
-      });
+      service
+        .getSeatMapData(flight, availability, passengers, configuration)
+        .then(data => {
+          if (isMounted) {
+            setParams(data.params);
+            setContent(data.content);
+            setExits(data.exits);
+            setBulks(data.bulks);
+            setSeatMapInited(true);
+            onSeatMapInited({
+              heightInPx: data.params?.isHorizontal ? data.params?.innerWidth : data.params?.totalDecksHeight,
+              widthInPx: data.params?.isHorizontal ? data.params?.totalDecksHeight : data.params?.innerWidth,
+              scaleFactor: data.params?.scale,
+              decksCount: data.content?.length,
+              currentDeckIndex: activeDeck,
+            });
+            hasReceivedFirstParams.current = false;
+          }
+        })
+        .catch(err => {
+          if (isMounted) {
+            onSeatMapInited({
+              heightInPx: undefined,
+              widthInPx: undefined,
+              scaleFactor: undefined,
+              decksCount: undefined,
+              currentDeckIndex: undefined,
+              error: err.message,
+            });
+          }
+        });
     }
 
     return () => {

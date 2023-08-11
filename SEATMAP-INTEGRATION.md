@@ -432,6 +432,7 @@ interface iInitialLayoutData {
   heightInPx: number;           // sum of lengths of all elements of the plane (decks, fuselage, separators) using internal units. Multiply by "scaleFactor" to get real pixel value on screen
   scaleFactor: number;          // scale applied to fit into provided boundaries
   widthInPx: number;            // outer width of the plane. CAUTION: if "horizontal" flag is set - height and width are swapped around to reflect that
+  error: string;                // error message if not possible to build a seat map
 }
 ```
 
