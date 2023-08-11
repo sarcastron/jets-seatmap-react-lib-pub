@@ -1,8 +1,18 @@
+const FLIGHT_MOCK0 = {
+  id: 'react-lib-test',
+  airlineCode: 'KU',
+  flightNo: '503',
+  departureDate: '2023-08-09',
+  departure: 'KWI',
+  arrival: 'BEY',
+  cabinClass: 'B',
+};
+
 const FLIGHT_MOCK1 = {
   id: '1111',
   airlineCode: 'UA',
   flightNo: '1482',
-  departureDate: '2023-07-25',
+  departureDate: '2023-09-25',
   departure: 'EWR',
   arrival: 'FLL',
   cabinClass: 'E',
@@ -13,7 +23,7 @@ const FLIGHT_MOCK2 = {
   id: '1111',
   airlineCode: 'EK',
   flightNo: '2',
-  departureDate: '2023-07-19',
+  departureDate: '2023-09-19',
   departure: 'LHR',
   arrival: 'DXB',
   cabinClass: 'B',
@@ -35,7 +45,7 @@ const FLIGHT_MOCK4 = {
   id: '1111',
   airlineCode: 'AA',
   flightNo: '2622',
-  departureDate: '2023-07-27',
+  departureDate: '2023-08-08',
   departure: 'JFK',
   arrival: 'MIA',
   cabinClass: 'B',

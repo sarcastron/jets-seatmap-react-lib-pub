@@ -27,7 +27,7 @@ const CONFIG_MOCK = {
     wingsWidth: 50,
     deckSeparation: 0,
 
-    floorColor: 'rgb(178,178,188)',
+    floorColor: '#595959',
     seatLabelColor: 'black',
     seatStrokeColor: 'rgb(230, 230, 230)',
     seatStrokeWidth: 1,

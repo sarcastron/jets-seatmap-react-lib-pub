@@ -8,7 +8,20 @@ const PASSENGER_BADGE_SIZE_COEF = 0.8;
 
 export const JetsSeat = ({ data }) => {
   const { onSeatClick, showTooltip, onTooltipClose, params, colorTheme } = useContext(JetsContext);
-  const { letter, type, status, size, passenger, color, rotation, seatType, topOffset, leftOffset, number } = data;
+  const {
+    letter,
+    type,
+    status,
+    size,
+    passenger,
+    color,
+    rotation,
+    seatType,
+    seatIconType,
+    topOffset,
+    leftOffset,
+    number,
+  } = data;
   const { index, aisle } = ENTITY_TYPE_MAP;
   const componentClassNames = `jets-seat jets-${type} jets-${status} jets-seat-r-${rotation}`;
 
@@ -18,15 +31,15 @@ export const JetsSeat = ({ data }) => {
     return {
       width: size.width * PASSENGER_BADGE_SIZE_COEF,
       height: size.width * PASSENGER_BADGE_SIZE_COEF,
-      left: size.width / 2 - size.width * (PASSENGER_BADGE_SIZE_COEF / 2),
-      top: size.height / 2 - size.width * (PASSENGER_BADGE_SIZE_COEF / 2),
+      // left: size.width / 2 - size.width * (PASSENGER_BADGE_SIZE_COEF / 2),
+      // top: size.height / 2 - size.width * (PASSENGER_BADGE_SIZE_COEF / 2),
       backgroundColor: colorTheme.defaultPassengerBadgeColor,
       transform: params?.antiRotation,
     };
   });
 
   const getSeatContent = () => {
-    if (type === index || type === aisle) return letter;
+    if (type === index || type === aisle) return ''; //letter;
 
     if (passenger) return passenger.abbr || 'P';
 
@@ -55,8 +68,8 @@ export const JetsSeat = ({ data }) => {
 
   const indexContentStyle = {
     transform: `${params?.antiRotation} scale(${params.antiScale})`,
-
     color: colorTheme.seatLabelColor,
+    zIndex: 100,
   };
 
   const updatePassengerStyle = () => {
@@ -65,13 +78,10 @@ export const JetsSeat = ({ data }) => {
     const $seatSvg = $component.current.querySelector('.seat');
 
     if (!$seatSvg) return;
-
-    const { height } = $seatSvg.getBoundingClientRect();
-    const preparedHeight = height * params.antiScale;
-
     const newPassengerStyle = { ...passengerStyle };
-
-    newPassengerStyle.top = preparedHeight / 2 - newPassengerStyle.height / 2;
+    // const { height } = $seatSvg.getBoundingClientRect();
+    // const preparedHeight = height * params.antiScale;
+    // newPassengerStyle.top = preparedHeight / 2 - newPassengerStyle.height / 2;
 
     if (passenger?.passengerColor) {
       newPassengerStyle.backgroundColor = passenger.passengerColor;
@@ -94,7 +104,6 @@ export const JetsSeat = ({ data }) => {
 
   return (
     <div
-      id={`seat-${number || type}`}
       ref={$component}
       style={style}
       className={componentClassNames}
@@ -104,6 +113,7 @@ export const JetsSeat = ({ data }) => {
     >
       {seatType && type !== index ? (
         <>
+          <div className={`jets-seat-number ST-${seatIconType}`}>{`${number}`}</div>
           <SeatIcon seatType={seatType} style={svgStyle} />
           {passenger && (
             <div className="jets-seat-passenger" style={passengerStyle}>

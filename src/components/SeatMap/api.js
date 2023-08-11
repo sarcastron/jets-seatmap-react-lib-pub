@@ -14,18 +14,50 @@ export class JetsSeatMapApiService extends JetsApiService {
     const data = { flight, lang: language, units };
 
     const path = 'flight/features/plane/seatmap';
-    const response = await this.postData(path, data);
+    const responseItems = await this.postData(path, data);
 
-    const planeFeatures = response.find(item => item.id === flight.id);
+    const result = {
+      seatDetails: null,
+    };
 
-    if (!planeFeatures) {
-      throw new Error(`plane features are not found for the flight: ${flight.id}`);
+    const cabinClasses = ['F', 'B', 'P', 'E'];
+
+    for (const item of responseItems) {
+      switch (item.id) {
+        case flight.id:
+          if (item && item.error) {
+            throw new Error(item.error);
+          }
+          if (flight.cabinClass) {
+            const { id, cabin, entertainment, power, wifi } = item;
+            result[flight.cabinClass] = {
+              cabin,
+              entertainment,
+              power,
+              wifi,
+            };
+          }
+          result.seatDetails = item.seatDetails;
+          break;
+        default:
+          const { id, cabin, entertainment, power, wifi } = item;
+          const cabinClass = id.split(':')[1];
+          if (cabinClass && cabinClasses.includes(cabinClass)) {
+            result[cabinClass] = {
+              cabin,
+              entertainment,
+              power,
+              wifi,
+            };
+          }
+          break;
+      }
     }
 
-    if (planeFeatures && planeFeatures.error) {
-      throw new Error(planeFeatures.error);
+    if (!result.seatDetails) {
+      throw new Error(`data is not found for the flight: ${flight.id}`);
     }
 
-    return planeFeatures;
+    return result;
   };
 }

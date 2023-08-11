@@ -34,7 +34,8 @@
   transform: scale(0.8) rotate(-20deg);
 }
 
-.jets-seat-r-nw > .jets-seat-passenger {
+.jets-seat-r-nw > .jets-seat-passenger,
+.jets-seat-r-nw > .jets-seat-number {
   transform: rotate(20deg);
 }
 
@@ -42,7 +43,8 @@
   transform: scale(0.8) rotate(20deg);
 }
 
-.jets-seat-r-ne > .jets-seat-passenger {
+.jets-seat-r-ne > .jets-seat-passenger,
+.jets-seat-r-ne > .jets-seat-number {
   transform: rotate(-20deg);
 }
 
@@ -50,7 +52,8 @@
   transform: rotate(180deg);
 }
 
-.jets-seat-r-s > .jets-seat-passenger {
+.jets-seat-r-s > .jets-seat-passenger,
+.jets-seat-r-s > .jets-seat-number {
   transform: rotate(-180deg);
 }
 
@@ -58,7 +61,8 @@
   transform: scale(0.8) rotate(160deg);
 }
 
-.jets-seat-r-se > .jets-seat-passenger {
+.jets-seat-r-se > .jets-seat-passenger,
+.jets-seat-r-se > .jets-seat-number {
   transform: rotate(-160deg);
 }
 
@@ -66,7 +70,8 @@
   transform: scale(0.8) rotate(-160deg);
 }
 
-.jets-seat-r-sw > .jets-seat-passenger {
+.jets-seat-r-sw > .jets-seat-passenger,
+.jets-seat-r-sw > .jets-seat-number {
   transform: rotate(160deg);
 }
 
@@ -82,13 +87,147 @@ svg {
   justify-content: center;
   align-items: center;
   font-size: 36px;
-}
-
-.jets-seat-r-s > .jets-seat-passenger {
-  transform: rotate(-180deg);
+  max-width: 192px;
+  max-height: 192px;
 }
 
 .jets-seat-svg {
   width: 100%;
   height: 100%;
+}
+
+.jets-seat-number {
+  position: absolute;
+  top: 18%;
+  font-size: 30px;
+  color: #fff;
+  text-align: center;
+}
+
+.ST-5,
+.ST-6 {
+  top: 28%;
+}
+
+.ST-8 {
+  margin-left: 12px;
+}
+.ST-9 {
+  margin-right: 12px;
+}
+
+.ST-10 {
+  margin-left: 60px;
+}
+.ST-11 {
+  margin-right: 60px;
+}
+
+.ST-12 {
+  top: 25%;
+  margin-right: 106px;
+}
+.ST-13 {
+  top: 25%;
+  margin-left: 106px;
+}
+
+.ST-15 {
+  margin-left: 38px;
+}
+.ST-16 {
+  margin-right: 38px;
+}
+.ST-17 {
+  margin-left: 72px;
+}
+.ST-18 {
+  margin-right: 72px;
+}
+
+.ST-20,
+.ST-21 {
+  top: 65%;
+}
+
+.ST-22,
+.ST-23 {
+  top: 60%;
+}
+.ST-24,
+.ST-25 {
+  top: 55%;
+}
+.ST-26 {
+  top: 30%;
+  margin-right: 50px;
+}
+.ST-27 {
+  top: 30%;
+  margin-left: 50px;
+}
+.ST-28 {
+  top: 45%;
+  margin-right: 62px;
+}
+.ST-29 {
+  top: 45%;
+  margin-left: 62px;
+}
+.ST-30 {
+  top: 60%;
+  margin-right: 62px;
+}
+.ST-31 {
+  top: 60%;
+  margin-left: 62px;
+}
+.ST-32 {
+  top: 60%;
+  margin-right: 58px;
+}
+.ST-33 {
+  top: 60%;
+  margin-left: 58px;
+}
+.ST-34 {
+  top: 40%;
+  margin-left: 27px;
+}
+.ST-35 {
+  top: 40%;
+  margin-right: 27px;
+}
+.ST-36 {
+  top: 62%;
+  margin-right: 122px;
+}
+.ST-37 {
+  top: 62%;
+  margin-left: 122px;
+}
+.ST-38 {
+  top: 28%;
+  margin-right: 122px;
+}
+.ST-39 {
+  top: 28%;
+  margin-left: 122px;
+}
+
+.ST-42 {
+  top: 70%;
+  margin-left: 260px;
+}
+.ST-43 {
+  top: 70%;
+  margin-right: 242px;
+}
+.ST-44 {
+  top: 18%;
+  margin-right: 254px;
+}
+.ST-45 {
+  top: 18%;
+  margin-left: 260px;
 }

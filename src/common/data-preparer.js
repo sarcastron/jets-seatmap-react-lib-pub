@@ -49,7 +49,8 @@ export class JetsContentPreparer {
   prepareData = (apiData, config) => {
     if (!apiData) return [];
 
-    const { cabin, seatDetails, entertainment, power, wifi } = apiData;
+    const { seatDetails } = apiData;
+
     const decks = seatDetails?.decks;
 
     const isDeckExist = decks && decks.length;
@@ -58,13 +59,12 @@ export class JetsContentPreparer {
     const preparedBulks = isDeckExist ? this._prepareBulks(decks) : [];
     const preparedExits = isDeckExist ? this._prepareExits(decks) : [];
 
-    const cabinFeatures = this._mergeCabinFeatures(cabin, entertainment, power, wifi);
     const preparedDecks = isDeckExist
       ? decks.map((deck, index) => {
           const bulks = preparedBulks[index];
           const exits = preparedExits[index];
 
-          return { ...this._prepareDeck(deck, bulks, exits, cabinFeatures, config), number: index + 1 };
+          return { ...this._prepareDeck(deck, bulks, exits, apiData, config), number: index + 1 };
         })
       : [];
 
@@ -139,16 +139,33 @@ export class JetsContentPreparer {
     });
   }
 
-  _prepareDeck(deck, preparedBulks, preparedExits, cabinFeatures, config) {
-    const biggestDeckRow = this._dataHelper.findBiggestDeckRow(deck.rows);
+  _prepareDeck(deck, preparedBulks, preparedExits, apiData, config) {
+    const rowGroups = this._groupRowsByCabinClass(deck.rows);
 
-    const preparedBiggestDeckRow = this._prepareRow(biggestDeckRow, cabinFeatures, config.lang);
-    const innerDeckWidth = this._dataHelper.getDeckInnerWidth(preparedBiggestDeckRow.width, config);
-    const indexRow = this._prepareIndexRow(preparedBiggestDeckRow);
-    const firstElementOffset = this._getFirstElementDeckOffset(deck);
+    const cabinClassWidths = [];
+    for (const rowGroup of rowGroups) {
+      const biggestDeckRow = this._dataHelper.findBiggestDeckRow(rowGroup.rows);
+      const preparedBiggestDeckRow = this._prepareRow(biggestDeckRow, {}, config.lang);
+      cabinClassWidths.push(preparedBiggestDeckRow.width);
+      // rowGroup.width = preparedBiggestDeckRow.width;
+    }
 
-    const rows = this._prepareRows(deck.rows, cabinFeatures, config.lang, firstElementOffset);
+    // console.log('cabinClassWidths', cabinClassWidths);
+    const sum = cabinClassWidths.reduce((acc, d) => acc + d, 0);
+    const targetDeckWidth = sum / cabinClassWidths.length; // Math.avg(...cabinClassWidths);
 
+    for (const rowGroup of rowGroups) {
+      const { cabin, entertainment, power, wifi } = apiData[rowGroup.classCode] || {};
+      const cabinFeatures = this._mergeCabinFeatures(cabin, entertainment, power, wifi);
+      const firstElementOffset = this._getFirstElementDeckOffset(deck);
+      const rows = this._prepareRows(rowGroup.rows, cabinFeatures, config.lang, firstElementOffset, targetDeckWidth);
+
+      rowGroup.rows = rows;
+    }
+
+    const rows = rowGroups.flatMap(g => g.rows);
+
+    const innerDeckWidth = this._dataHelper.getDeckInnerWidth(targetDeckWidth, config);
     const deckHeight = this._dataHelper.calculateDeckHeight(rows, preparedBulks, preparedExits);
 
     const preparedWingsInfo = this._prepareWingsForDeck(deck.wingsInfo, rows[0].topOffset, deckHeight);
@@ -158,9 +175,26 @@ export class JetsContentPreparer {
       width: innerDeckWidth,
       height: deckHeight,
       level: deck.level,
-      rows: [indexRow, ...rows],
+      rows,
       wingsInfo: preparedWingsInfo,
     };
+  }
+
+  _groupRowsByCabinClass(rows) {
+    const groups = [];
+    let currentClassCode = null;
+    let currentGroup = null;
+
+    for (const row of rows) {
+      if (row.classCode !== currentClassCode) {
+        currentClassCode = row.classCode;
+        currentGroup = { rows: [], topOffset: row.topOffset, classCode: currentClassCode, width: 0 };
+        groups.push(currentGroup);
+      }
+      currentGroup.rows.push(row);
+    }
+
+    return groups;
   }
 
   _updateDeckWithWings(deck, isWingsExist, config) {
@@ -203,17 +237,17 @@ export class JetsContentPreparer {
     return intersection;
   }
 
-  _prepareRows = (rows, cabinFeatures, lang, offset) => {
+  _prepareRows = (rows, cabinFeatures, lang, offset, maxRowWidth = 0) => {
     if (!rows?.length) return [];
-    const prepared = rows.map(row => this._prepareRow(row, cabinFeatures, lang, offset));
+    const prepared = rows.map(row => this._prepareRow(row, cabinFeatures, lang, offset, maxRowWidth));
 
     return prepared;
   };
 
-  _prepareRow = (row, cabinFeatures, lang, offset) => {
+  _prepareRow = (row, cabinFeatures, lang, offset, maxRowWidth = 0) => {
     const { number, topOffset, seatScheme, classCode, seatType } = row;
     const _topOffset = topOffset + offset;
-    const preparedSeats = this._prepareSeats(row, cabinFeatures, lang);
+    const preparedSeats = this._prepareSeats(row, cabinFeatures, lang, maxRowWidth);
     const rowWidth = preparedSeats.map(seat => seat.size.width).reduce((a, b) => a + b, 0);
 
     return {
@@ -228,19 +262,33 @@ export class JetsContentPreparer {
     };
   };
 
-  _prepareSeats = (row, cabinFeatures, lang) => {
-    const { seatScheme, seats, seatType: _rowSeatType } = row;
+  _prepareSeats = (row, cabinFeatures, lang, maxRowWidth = 0) => {
+    const { seatScheme, seats, seatType } = row;
 
     if (!seats?.length) return [];
 
     let seatsCounter = 0;
     const rowElements = seatScheme.split('');
 
+    let aisleWidth = 0;
+
+    // resize aisles if maxRowWidth is set
+    if (maxRowWidth) {
+      const [width] = SEAT_SIZE_BY_TYPE[seatType];
+      const seatsCount = seatScheme.match(/S|E/g).length;
+      const aislesCount = seatScheme.match(/-/g).length;
+      const seatsWidth = seatsCount * width;
+      const widthDiff = maxRowWidth - seatsWidth;
+      const targetAisleWidth = widthDiff / aislesCount;
+
+      aisleWidth = targetAisleWidth > 0 ? Math.min(targetAisleWidth, width) : 1;
+    }
+
     const result = rowElements.reduce((acc, item) => {
       let element = {};
 
       if (item === ENTITY_SCHEME_MAP.aisle) {
-        element = this._prepareAisle(row);
+        element = this._prepareAisle(row, aisleWidth);
       } else if (item === ENTITY_SCHEME_MAP.empty) {
         element = this._prepareEmpty(row);
       } else if (item === ENTITY_SCHEME_MAP.seat) {
@@ -261,7 +309,7 @@ export class JetsContentPreparer {
       element.letter = element.type === ENTITY_TYPE_MAP.aisle ? '' : element.letter;
       element.type = element.type === ENTITY_TYPE_MAP.aisle ? ENTITY_TYPE_MAP.empty : ENTITY_TYPE_MAP.index;
       element.status = ENTITY_STATUS_MAP.disabled;
-      element.topOffset = DEFAULT_INDEX_ROW_SEAT_TOP_OFFSET;
+      element.topOffset = element.topOffset - element.size.height / 2;
       element.number = '';
       element.size = {
         width: element.size.width,
@@ -274,7 +322,7 @@ export class JetsContentPreparer {
       return element;
     });
 
-    return { ...row, number: '', seats, topOffset: this._deckTitleHeight };
+    return { ...row, number: '', seats, topOffset: row.topOffset };
   };
 
   _prepareSeat = (seat, row, cabinFeatures, lang) => {
@@ -303,14 +351,15 @@ export class JetsContentPreparer {
       classCode,
       rowName,
       seatType: seatClassAndType,
+      seatIconType: seatType,
       size: { width, height },
     };
   };
 
-  _prepareAisle = row => {
+  _prepareAisle = (row, maxWidth = 0) => {
     const { number: rowNumber, seatType } = row;
     const [width, height] = SEAT_SIZE_BY_TYPE[seatType];
-    const size = { width, height };
+    const size = { width: maxWidth || width, height };
     const type = ENTITY_TYPE_MAP.aisle;
     const status = ENTITY_STATUS_MAP.disabled;
 

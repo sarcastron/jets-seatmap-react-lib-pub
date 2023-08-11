@@ -48,8 +48,6 @@ export const LOCALES_MAP = {
 
 //#region Configuration
 
-export const DEFAULT_FEATURES_LIST = ['seatDetails', 'cabin', 'entertainment', 'power', 'wifi', 'seatMapLink'];
-
 export const DEFAULT_LANG = 'EN';
 
 export const DEFAULT_UNITS = 'metric';
