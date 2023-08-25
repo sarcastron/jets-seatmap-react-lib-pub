@@ -234,6 +234,7 @@ export class JetsContentPreparer {
     if (!seats?.length) return [];
 
     let seatsCounter = 0;
+    const aisles = [];
     const rowElements = seatScheme.split('');
 
     const result = rowElements.reduce((acc, item) => {
@@ -241,17 +242,20 @@ export class JetsContentPreparer {
 
       if (item === ENTITY_SCHEME_MAP.aisle) {
         element = this._prepareAisle(row);
+        aisles.push(element);
       } else if (item === ENTITY_SCHEME_MAP.empty) {
         element = this._prepareEmpty(row);
       } else if (item === ENTITY_SCHEME_MAP.seat) {
         element = this._prepareSeat(seats[seatsCounter], row, cabinFeatures, lang);
         seatsCounter++;
       }
-
       acc.push(element);
 
       return acc;
     }, []);
+
+    const lastSeatTopOffset = seats[seatsCounter - 1]?.topOffset || 0;
+    aisles.forEach(a => (a.topOffset = lastSeatTopOffset));
 
     return result;
   };
@@ -314,7 +318,7 @@ export class JetsContentPreparer {
     const type = ENTITY_TYPE_MAP.aisle;
     const status = ENTITY_STATUS_MAP.disabled;
 
-    return { uniqId: Utils.generateId(), letter: rowNumber, type, status, size };
+    return { uniqId: Utils.generateId(), letter: rowNumber, type, status, size, topOffset: 0 };
   };
 
   _prepareEmpty = row => {

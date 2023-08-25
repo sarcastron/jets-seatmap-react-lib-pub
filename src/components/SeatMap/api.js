@@ -26,6 +26,10 @@ export class JetsSeatMapApiService extends JetsApiService {
       throw new Error(planeFeatures.error);
     }
 
+    if (planeFeatures && !planeFeatures.seatDetails) {
+      throw new Error(`seat details are not found for the flight: ${flight.id}`);
+    }
+
     return planeFeatures;
   };
 }

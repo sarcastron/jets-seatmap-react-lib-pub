@@ -20,7 +20,7 @@ const FLIGHT_MOCK2 = {
   passengerType: 'ADT',
 };
 
-const FLIGHT_MOCK = {
+const FLIGHT_MOCK3 = {
   id: '1111',
   airlineCode: 'BA',
   flightNo: '106',
@@ -59,6 +59,28 @@ const FLIGHT_MOCK6 = {
   departureDate: '2023-08-25',
   departure: 'MUC',
   arrival: 'LHR',
+  cabinClass: 'E',
+  planeCode: '',
+};
+
+const FLIGHT_MOCK = {
+  id: '111',
+  airlineCode: 'LH',
+  flightNo: '402',
+  departureDate: '2023-08-22',
+  departure: 'FRA',
+  arrival: 'EWR',
+  cabinClass: 'E',
+  planeCode: '',
+};
+
+const FLIGHT_MOCK8 = {
+  id: '111',
+  airlineCode: 'LH',
+  flightNo: '424',
+  departureDate: '2023-09-30',
+  departure: 'MUC',
+  arrival: 'BOS',
   cabinClass: 'E',
   planeCode: '',
 };
