@@ -1,7 +1,36 @@
 import { JetsApiService } from '../../common/api';
 import { DEFAULT_LANG, DEFAULT_UNITS } from '../../common';
 
-const API_SUPPORTED_LANGUAGES = ['EN', 'DE', 'RU', 'CN', 'ES', 'FR', 'IT', 'NO', 'DA', 'SV', 'PL'];
+const API_SUPPORTED_LANGUAGES = [
+  'AR',
+  'CN',
+  'CS',
+  'DA',
+  'DE',
+  'EN',
+  'EL',
+  'ES',
+  'ET',
+  'FR',
+  'HE',
+  'HU',
+  'ID',
+  'IT',
+  'JA',
+  'IW',
+  'KO',
+  'LT',
+  'LV',
+  'NL',
+  'NO',
+  'PL',
+  'PT',
+  'RO',
+  'RU',
+  'TR',
+  'UK',
+  'SV',
+];
 
 export class JetsSeatMapApiService extends JetsApiService {
   constructor(appId, key, url, localStorage = null) {

@@ -37,7 +37,7 @@ const FLIGHT_MOCK = {
   departureDate: '2023-09-27',
   departure: 'DXB',
   arrival: 'LHR',
-  cabinClass: 'E',
+  cabinClass: 'A',
   passengerType: 'ADT',
 };
 
