@@ -1,4 +1,20 @@
-import { LOCALE_EN, LOCALE_RU, LOCALE_CN, LOCALE_DE, LOCALE_ES, LOCALE_PL } from './i18n.languages';
+import {
+  LOCALE_EN,
+  LOCALE_RU,
+  LOCALE_CN,
+  LOCALE_DE,
+  LOCALE_ES,
+  LOCALE_PL,
+  LOCALE_AR,
+  LOCALE_FR,
+  LOCALE_CS,
+  LOCALE_PT,
+  LOCALE_IT,
+  LOCALE_UK,
+  LOCALE_JA,
+  LOCALE_KO,
+  LOCALE_TR,
+} from './i18n.languages';
 
 //#region Entity
 
@@ -42,6 +58,15 @@ export const LOCALES_MAP = {
   ES: LOCALE_ES,
   PL: LOCALE_PL,
   RU: LOCALE_RU,
+  AR: LOCALE_AR,
+  CS: LOCALE_CS,
+  FR: LOCALE_FR,
+  PT: LOCALE_PT,
+  UK: LOCALE_UK,
+  IT: LOCALE_IT,
+  JA: LOCALE_JA,
+  KO: LOCALE_KO,
+  TR: LOCALE_TR,
 };
 
 //#endregion
