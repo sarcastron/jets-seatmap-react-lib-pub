@@ -19,10 +19,18 @@ export const JetsBulk = ({ id, type, align, width, height, iconType, xOffset, to
     const updatedWidth = Math.floor(width * SCALE_BULK_COEFF);
     const updatedHeight = Math.floor(height * SCALE_BULK_COEFF);
 
+    const leftAlignment = align === DECK_ITEM_ALIGN_MAP.left ? Math.max(xOffset, 0) : DEFAULT_STYLE_POSITION;
+    const rightAlignment = align === DECK_ITEM_ALIGN_MAP.right ? Math.max(xOffset, 0) : DEFAULT_STYLE_POSITION;
+    const centerOfThePlane = params.innerWidth / 2;
+    const centerAlignment =
+      align === DECK_ITEM_ALIGN_MAP.center && xOffset
+        ? Math.floor((xOffset + centerOfThePlane) * SCALE_BULK_COEFF)
+        : DEFAULT_STYLE_POSITION;
+
     return {
       top: topOffset,
-      left: align === DECK_ITEM_ALIGN_MAP.left ? xOffset : DEFAULT_STYLE_POSITION,
-      right: align === DECK_ITEM_ALIGN_MAP.right ? xOffset : DEFAULT_STYLE_POSITION,
+      left: align === DECK_ITEM_ALIGN_MAP.left ? leftAlignment : centerAlignment,
+      right: rightAlignment,
       width: updatedWidth,
       height: updatedHeight,
       transform: align === DECK_ITEM_ALIGN_MAP.right ? 'scaleX(-1)' : '',

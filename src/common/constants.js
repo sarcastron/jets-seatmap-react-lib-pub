@@ -177,6 +177,7 @@ export const DEFAULT_INDEX_ROW_HEIGHT = 120;
 export const DECK_ITEM_ALIGN_MAP = {
   left: 'left',
   right: 'right',
+  center: 'center',
 };
 
 export const DEFAULT_STYLE_POSITION = 'auto';

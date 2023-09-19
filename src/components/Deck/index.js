@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from 'react';
-import { JetsContext, LOCALES_MAP, DEFAULT_DECK_TITLE_HEIGHT, DEFAULT_DECK_PADDING_SIZE } from '../../common';
+import { JetsContext, DEFAULT_DECK_PADDING_SIZE } from '../../common';
 import { JetsBulk } from '../Bulk';
 import { JetsDeckExit } from '../DeckExit';
 import { JetsDeckTitle } from '../DeckTitle';

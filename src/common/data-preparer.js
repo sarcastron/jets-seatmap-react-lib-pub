@@ -109,14 +109,24 @@ export class JetsContentPreparer {
   }
 
   _getFirstElementDeckOffset(deck) {
-    const bulksMinOffset = deck['bulks'].reduce((minimum, deckItem) => {
-      return deckItem.topOffset < minimum ? deckItem.topOffset : minimum;
+    const bulksMinOffset = deck.bulks.reduce((minimum, item) => {
+      return item.topOffset < minimum ? item.topOffset : minimum;
     }, 0);
-    const exitsMinOffset = deck['exits'].reduce((minimum, deckItem) => {
-      return deckItem.topOffset < minimum ? deckItem.topOffset : minimum;
+    const exitsMinOffset = deck.exits.reduce((minimum, item) => {
+      return item.topOffset < minimum ? item.topOffset : minimum;
     }, 0);
 
-    const firstElementOffset = Math.min(bulksMinOffset, exitsMinOffset);
+    const firstRow = deck.rows
+      .sort((a, b) => {
+        a.topOffset - b.topOffset;
+      })
+      .at(0);
+
+    const seatsMinOffset = firstRow.seats.reduce((minimum, item) => {
+      return item.topOffset < minimum ? item.topOffset : minimum;
+    }, 0);
+
+    const firstElementOffset = Math.min(bulksMinOffset, exitsMinOffset, seatsMinOffset);
     const offset = firstElementOffset < 0 ? -firstElementOffset : firstElementOffset;
     return offset + this._deckTitleHeight + DEFAULT_INDEX_ROW_HEIGHT;
   }
