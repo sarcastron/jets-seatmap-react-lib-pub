@@ -22,9 +22,11 @@ export const JetsBulk = ({ id, type, align, width, height, iconType, xOffset, to
     const leftAlignment = align === DECK_ITEM_ALIGN_MAP.left ? Math.max(xOffset, 0) : DEFAULT_STYLE_POSITION;
     const rightAlignment = align === DECK_ITEM_ALIGN_MAP.right ? Math.max(xOffset, 0) : DEFAULT_STYLE_POSITION;
     const centerOfThePlane = params.innerWidth / 2;
+    const halfOfTheBulk = updatedWidth / 2;
+
     const centerAlignment =
       align === DECK_ITEM_ALIGN_MAP.center && xOffset
-        ? Math.floor((xOffset + centerOfThePlane) * SCALE_BULK_COEFF)
+        ? Math.floor(xOffset * SCALE_BULK_COEFF + centerOfThePlane - halfOfTheBulk)
         : DEFAULT_STYLE_POSITION;
 
     return {

@@ -96,4 +96,15 @@ const FLIGHT_MOCK = {
   planeCode: '',
 };
 
+const FLIGHT_MOCK10 = {
+  id: '111',
+  airlineCode: 'LH',
+  flightNo: '1381',
+  departureDate: '2023-09-30',
+  departure: 'POZ',
+  arrival: 'FRA',
+  cabinClass: 'E',
+  planeCode: '',
+};
+
 export default FLIGHT_MOCK;
