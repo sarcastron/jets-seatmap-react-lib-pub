@@ -126,17 +126,13 @@ export class JetsSeatMapService {
         const seats = row.seats.map(seat => {
           const found = passengers.find(passenger => seat.number && passenger?.seat?.seatLabel === seat.number);
 
-          if (found && seat.status === available) {
+          if (found && (seat.status === available || seat.status === selected)) {
             seat['status'] = selected;
             seat['price'] = found.seat?.price || seat['price'];
             seat['passenger'] = found;
-          }
-
-          if (found && seat.status === unavailable) {
+          } else if (found && seat.status === unavailable) {
             found['seat'] = null;
-          }
-
-          if (!found && seat.status === selected) {
+          } else if (!found && seat.status === selected) {
             seat['status'] = available;
             seat['passenger'] = null;
           }
