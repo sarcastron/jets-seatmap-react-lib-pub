@@ -110,8 +110,11 @@ interface IFlight {
   departure: string;
   arrival: string;
   cabinClass: string;
-  passengerType: string;
-  planeCode: number;
+  passengerType?: string;
+  planeCode?: number;
+  startRow?: string; // string [ 3 .. 24 ] characters
+  endRow?: string; // string [ 3 .. 24 ] characters
+
 }
 ```
 
@@ -131,8 +134,13 @@ Example of data seatmap receives:
 };
 ```
 
+Cabin class vslues: `E` - economy, `P` - economy premium, `B` - business, `F` - first, `A` - whole plane
+
 The **departure** and **arrival** fields must consist the codes of airports. The **departureDate** field must be in
 `yyyy-mm-dd` format.
+
+`startRow` - first of available row numbers and its letters, colon as divider, upper case, e.g. `10` or `10:ABCDEF`. If startRow parameter is set `endRow` also needs to be set, otherwise, it will be `ignored`.
+`endRow` - last of available row numbers and its letters, colon as divider, upper case, e.g. `32` or `32:ACDF`. If endRow parameter is set `startRow` also needs to be set, otherwise, it will be `ignored`.
 
 &nbsp;
 
