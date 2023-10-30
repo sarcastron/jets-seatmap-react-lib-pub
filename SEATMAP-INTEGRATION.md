@@ -134,7 +134,7 @@ Example of data seatmap receives:
 };
 ```
 
-Cabin class vslues: `E` - economy, `P` - economy premium, `B` - business, `F` - first, `A` - whole plane
+Cabin class vslues: `E` - economy, `P` - economy premium, `B` - business, `F` - first
 
 The **departure** and **arrival** fields must consist the codes of airports. The **departureDate** field must be in
 `yyyy-mm-dd` format.
