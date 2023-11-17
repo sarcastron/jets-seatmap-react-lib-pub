@@ -235,10 +235,10 @@ export class JetsContentPreparer {
     const deckA = 0;
     const deckB = deckHeight;
 
-    const min1 = Math.min(wingA, wingB);
-    const max1 = Math.max(wingA, wingB);
-    const min2 = Math.min(deckA, deckB);
-    const max2 = Math.min(deckA, deckB);
+    // const min1 = Math.min(wingA, wingB);
+    // const max1 = Math.max(wingA, wingB);
+    // const min2 = Math.min(deckA, deckB);
+    // const max2 = Math.min(deckA, deckB);
 
     intersection.start = Math.max(deckA, wingA);
     intersection.finish = Math.min(deckB, wingB);
@@ -347,7 +347,8 @@ export class JetsContentPreparer {
     const seatType = seat.seatType || _rowSeatType;
     const seatClassAndType = `${classCode}-${seatType}`;
 
-    const [width, height] = SEAT_SIZE_BY_TYPE[seatType];
+    const [seatWidthByRow, seatHeightByRow] = SEAT_SIZE_BY_TYPE[_rowSeatType];
+    const [seatWidth, seatHeight] = SEAT_SIZE_BY_TYPE[seatType];
 
     return {
       uniqId: Utils.generateId(),
@@ -362,7 +363,7 @@ export class JetsContentPreparer {
       rowName,
       seatType: seatClassAndType,
       seatIconType: seatType,
-      size: { width, height },
+      size: { width: Math.max(seatWidthByRow, seatWidth), height: seatHeight },
     };
   };
 
@@ -433,6 +434,7 @@ export class JetsContentPreparer {
         title: null,
         uniqId: Utils.generateId(),
         value: item?.label,
+        cssClass: item?.cssClass,
       };
     });
 

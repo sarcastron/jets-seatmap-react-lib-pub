@@ -16,7 +16,7 @@ const AVAILABILITY_MOCK = [
     price: 33,
     onlyForPassengerType: ['ADT', 'CHD', 'INF'],
     additionalProps: [
-      { label: 'Clear air', icon: null },
+      { label: 'Clear air', icon: null, cssClass: 'clear-air-style' },
       { label: 'USB plug', icon: 'power' },
     ],
     color: 'red',

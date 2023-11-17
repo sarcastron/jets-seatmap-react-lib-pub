@@ -68,3 +68,12 @@
   width: 72px;
   height: 72px;
 }
+
+.clear-air-style-icon > svg > path {
+  fill: darkorange;
+}
+
+.clear-air-style-label {
+  color: darkorange;
+  font-weight: bold;
+}
