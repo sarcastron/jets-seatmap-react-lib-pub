@@ -176,12 +176,13 @@ export class JetsDataHelper {
   };
 
   _findLowestSeat = seats => {
-    let lowest = {};
     let lowestBottomBoundary = 0;
+    const filteredSeats = seats.filter(seat => seat.letter && !Number.isInteger(seat.letter));
+    let lowest = filteredSeats[0];
 
-    for (const seat of seats) {
+    for (const seat of filteredSeats) {
       const { width, height } = seat.size;
-      const seatBottomBoundary = seat.topOffset + height;
+      const seatBottomBoundary = (seat.topOffset || 0) + height;
       if (lowestBottomBoundary < seatBottomBoundary) {
         lowestBottomBoundary = seatBottomBoundary;
         lowest = seat;
