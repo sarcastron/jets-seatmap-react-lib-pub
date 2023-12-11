@@ -31,7 +31,7 @@
 }
 
 .jets-seat-r-nw {
-  transform: scale(0.8) rotate(-20deg);
+  transform: rotate(-20deg);
 }
 
 .jets-seat-r-nw > .jets-seat-passenger,
@@ -39,13 +39,31 @@
   transform: rotate(20deg);
 }
 
+.jets-seat-r-nw45 {
+  transform: rotate(-45deg);
+}
+
+.jets-seat-r-nw45 > .jets-seat-passenger,
+.jets-seat-r-nw45 > .jets-seat-number {
+  transform: rotate(45deg);
+}
+
 .jets-seat-r-ne {
-  transform: scale(0.8) rotate(20deg);
+  transform: rotate(20deg);
 }
 
 .jets-seat-r-ne > .jets-seat-passenger,
 .jets-seat-r-ne > .jets-seat-number {
   transform: rotate(-20deg);
+}
+
+.jets-seat-r-ne45 {
+  transform: rotate(45deg);
+}
+
+.jets-seat-r-ne45 > .jets-seat-passenger,
+.jets-seat-r-ne45 > .jets-seat-number {
+  transform: rotate(-45deg);
 }
 
 .jets-seat-r-s {

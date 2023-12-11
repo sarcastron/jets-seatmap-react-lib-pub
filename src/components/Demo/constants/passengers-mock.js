@@ -12,6 +12,7 @@ const PASSENGERS_MOCK = [
     },
     passengerLabel: 'Alex Test',
     passengerColor: 'brown',
+    readOnly: true,
   },
   {
     id: '4',

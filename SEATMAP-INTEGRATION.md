@@ -114,7 +114,6 @@ interface IFlight {
   planeCode?: number;
   startRow?: string; // string [ 3 .. 24 ] characters
   endRow?: string; // string [ 3 .. 24 ] characters
-
 }
 ```
 
@@ -191,7 +190,8 @@ Example of data seatmap receives:
     price: 33,
     onlyForPassengerType: ['ADT', 'CHD', 'INF'],
     additionalProps: [        
-      { label: 'Local prop', icon: '+' }
+      { label: 'Clear air', icon: null, cssClass: 'clear-air-style' },
+      { label: 'USB plug', icon: 'power' },
     ],
     color: 'green'            // individual seat's color
   },
@@ -224,6 +224,15 @@ and it would be the same as pass it with **0** value.
 If `onlyForPassengerType` field is empty or doesn't exist, then it has no restrictions value by default.
 
 Coloring seats tip: `color` field has next set of priorities: individual > wildcard > internal. If `wildcard` color is present - it's highly recommended to add `color` property to all individual seats for visual distinction.
+
+All `additionalProps` can have property `cssClass`that will be assigned to the container, icon and label. For example, if `cssClass: 'cssClass: 'clear-air-style''` in the HTML you will have 3 additional CSS classes:
+  *  `clear-air-style` - class of seat feature container
+  *  `clear-air-style-icon` - class of seat feature icon
+  *  `clear-air-style-label`- class of seat feature label
+
+These CSS classes can be defined at the host level CSS.
+
+Max count of visible seat features/props = `12`.
 
 &nbsp;
 
@@ -270,6 +279,7 @@ Example of data seatmap receives:
         }
         "passengerLabel": "Alex",
         "passengerColor": "brown",
+        "readOnly": true
       },
       {
         "id": "3",
@@ -302,6 +312,8 @@ If you will not pass `passengerType`, `passengerLabel` and `passengerColor` fiel
 
 Please notice, that seatmap identifies how many passengers to allocate by a length of `passengers` array. Therefore, for
 example, to allocate 2 passengers without any predefined seat or its type, `passengers` array shall contain 2 items.
+
+For passengers with property `readOnly: true` not possible to unselect assigned seat.
 
 &nbsp;
 

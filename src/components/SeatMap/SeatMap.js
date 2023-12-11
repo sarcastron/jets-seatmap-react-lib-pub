@@ -220,9 +220,15 @@ export const JetsSeatMap = ({
       }
 
       if (data?.passenger) {
+        if (data?.passenger?.readOnly) {
+          return;
+        }
         onSeatUnselect(data);
       } else {
-        isSeatSelectDisabled(data) ? null : onSeatSelect(data);
+        if (isSeatSelectDisabled(data)) {
+          return;
+        }
+        onSeatSelect(data);
       }
     } else {
       showTooltip(data, element, event);
@@ -271,7 +277,7 @@ export const JetsSeatMap = ({
 
     if (notAvailable) return;
 
-    const nextPassanger = service.getNextPassenger(passengersList);
+    const nextPassenger = service.getNextPassenger(passengersList);
     const tooltipData = service.calculateTooltipData(
       data,
       element.current,
@@ -280,28 +286,33 @@ export const JetsSeatMap = ({
       params?.isHorizontal
     );
 
-    setSelectAvailable(!!nextPassanger);
-    setActiveTooltip({ ...tooltipData, nextPassanger, lang: configuration.lang, seatmapElement: seatMapRef.current });
+    setSelectAvailable(!!nextPassenger);
+    setActiveTooltip({
+      ...tooltipData,
+      nextPassenger,
+      lang: configuration.lang,
+      seatmapElement: seatMapRef.current,
+    });
   };
 
   const onSeatSelect = seat => {
-    const { data, passengers: newPassangers } = service.selectSeatHandler(content, seat, passengersList);
+    const { data, passengers: newPassengers } = service.selectSeatHandler(content, seat, passengersList);
 
     setContent(data);
-    setPassengersList(newPassangers);
+    setPassengersList(newPassengers);
     setActiveTooltip(null);
 
-    onSeatSelected(newPassangers);
+    onSeatSelected(newPassengers);
   };
 
   const onSeatUnselect = seat => {
-    const { data, passengers: newPassangers } = service.unselectSeatHandler(content, seat, passengersList);
+    const { data, passengers: newPassengers } = service.unselectSeatHandler(content, seat, passengersList);
 
     setContent(data);
-    setPassengersList(newPassangers);
+    setPassengersList(newPassengers);
     setActiveTooltip(null);
 
-    onSeatUnselected(newPassangers);
+    onSeatUnselected(newPassengers);
   };
 
   const onTooltipClose = (data, element, event) => {
@@ -313,12 +324,12 @@ export const JetsSeatMap = ({
   };
 
   const isSeatSelectDisabled = seatData => {
-    const nextPassanger = service.getNextPassenger(passengersList);
+    const nextPassenger = service.getNextPassenger(passengersList);
     return (
-      !nextPassanger ||
-      (nextPassanger?.passengerType &&
+      !nextPassenger ||
+      (nextPassenger?.passengerType &&
         seatData.passengerTypes?.length &&
-        !seatData.passengerTypes?.includes(nextPassanger?.passengerType))
+        !seatData.passengerTypes?.includes(nextPassenger?.passengerType))
     );
   };
 

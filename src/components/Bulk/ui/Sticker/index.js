@@ -7,15 +7,15 @@ export const Sticker = ({ iconType }) => {
   const $component = useRef();
   const { params, colorTheme } = useContext(JetsContext);
 
-  const { bulkIconColor } = colorTheme
+  const { bulkIconColor } = colorTheme;
 
-  const preparedIconType = iconType ? iconType.toLowerCase() : '';
+  const preparedIconType = iconType ? iconType.toLowerCase().trim() : '';
 
   const onLoadSticker = () => {
     if (!$component.current) return;
 
     const { width, height } = $component.current.getBoundingClientRect();
-    const orientationCheck = params?.isHorizontal ? width > height : width < height;
+    const orientationCheck = params?.isHorizontal ? height > width : width > height;
 
     const stickerClass = orientationCheck ? 'bulk__sticker--album' : 'bulk__sticker--portrait';
 
@@ -27,7 +27,10 @@ export const Sticker = ({ iconType }) => {
   }, []);
 
   let coloredStickerSVG = STICKER_TEMPLATE_MAP.get(preparedIconType);
-  coloredStickerSVG = preparedIconType && coloredStickerSVG.replace('$stickerColor', bulkIconColor)
+  // if (preparedIconType && !coloredStickerSVG) {
+  //   console.log('NOT SUPPORTED STICKER:', preparedIconType);
+  // }
+  coloredStickerSVG = preparedIconType && coloredStickerSVG?.replace('$stickerColor', bulkIconColor);
 
   return (
     <div className={`bulk__sticker ${componentClassName}`} ref={$component}>

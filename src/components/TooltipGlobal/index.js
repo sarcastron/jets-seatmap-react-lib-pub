@@ -41,7 +41,7 @@ export const JetsTooltipGlobal = ({ data }) => {
     measurements,
     price,
     passenger,
-    nextPassanger,
+    nextPassenger,
     passengerTypes,
     lang,
     rowName,
@@ -56,7 +56,7 @@ export const JetsTooltipGlobal = ({ data }) => {
     additionalProps,
   } = data;
 
-  // TOD rewrite this
+  // TODO rewrite this
   const pointerHeight = 14;
   const pointerWidth = 16;
   const pointerCSSOffset = -16;
@@ -188,11 +188,11 @@ export const JetsTooltipGlobal = ({ data }) => {
 
           <div className="jets-tooltip--features" style={featureListStyle}>
             <ul>
-              {finalListOfFeatures.map(({ uniqId, title, icon, value }) => (
-                <li className="jets-tooltip--feature" key={uniqId}>
+              {finalListOfFeatures.map(({ uniqId, title, icon, value, cssClass }) => (
+                <li className={`jets-tooltip--feature ${cssClass || ''}`} key={uniqId}>
                   {icon ? (
                     <span
-                      className="svg_span"
+                      className={`svg_span ${cssClass ? cssClass + '-icon' : ''}`}
                       dangerouslySetInnerHTML={{
                         __html: icon,
                       }}
@@ -200,7 +200,12 @@ export const JetsTooltipGlobal = ({ data }) => {
                   ) : (
                     <span>{title}</span>
                   )}
-                  <div style={{ color: tooltipFontColor }}>{value}</div>
+                  <div
+                    className={`${cssClass ? cssClass + '-label' : ''}`}
+                    style={cssClass ? {} : { color: tooltipFontColor }}
+                  >
+                    {value}
+                  </div>
                 </li>
               ))}
               {finalListOfFeatures.length % 2 == 1 && <li className="jets-tooltip--feature">&nbsp;</li>}
@@ -243,6 +248,7 @@ export const JetsTooltipGlobal = ({ data }) => {
           />
           {passenger ? (
             <JetsButton
+              disabled={data?.passenger?.readOnly}
               onClick={() => onSeatUnselect(data)}
               content={LOCALES_MAP[lang][UNSELECT_BTN_KEY]}
               className="jets-btn jets-tooltip--btn "

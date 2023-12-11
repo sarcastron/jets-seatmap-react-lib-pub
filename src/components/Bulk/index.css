@@ -32,6 +32,6 @@
 }
 
 .bulk__sticker--portrait {
-  height: 2em;
   width: 2em;
+  height: 4em;
 }
