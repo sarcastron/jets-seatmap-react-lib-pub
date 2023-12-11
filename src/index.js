@@ -1,1 +1,2 @@
-export * from './components/SeatMap';
+export * from './common';
+export * from './components';
