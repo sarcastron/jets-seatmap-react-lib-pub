@@ -1,7 +1,6 @@
 import { JetsDataHelper } from './data-helper';
 import {
   CLASS_CODE_MAP,
-  Utils,
   LOCALES_MAP,
   ENTITY_SCHEME_MAP,
   ENTITY_STATUS_MAP,
@@ -9,7 +8,8 @@ import {
   DEFAULT_DECK_TITLE_HEIGHT,
   DEFAULT_INDEX_ROW_HEIGHT,
   SEAT_SIZE_BY_TYPE,
-} from '.';
+} from './constants';
+import { Utils } from './utils';
 
 const DEFAULT_INDEX_ROW_SEAT_TOP_OFFSET = 50;
 const DEFAULT_INDEX_ROW_SEAT_HEIGHT = 50;
