@@ -3,7 +3,7 @@ import {
   THEME_FUSELAGE_OUTLINE_WIDTH,
   FUSELAGE_HEIGHT_TO_WIDTH_RATIO,
   ENTITY_TYPE_MAP,
-} from '.';
+} from './constants';
 
 export class JetsDataHelper {
   constructor() {}
