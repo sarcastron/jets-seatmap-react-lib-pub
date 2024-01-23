@@ -74,7 +74,7 @@ export const JetsTooltipGlobal = ({ data }) => {
 
   const seatY = seatRect.top - seatmapRect.top;
   const seatX = seatRect.left - seatmapRect.left;
-  const rowY = parentRowRect.top - document.body.getBoundingClientRect().top;
+  const rowSeatY = seatRect.top - seatmapParentRect.top;
 
   const keyForPosition = params?.isHorizontal ? 'left' : 'top';
   const keyForSize = params?.isHorizontal ? 'width' : 'height';
@@ -84,7 +84,7 @@ export const JetsTooltipGlobal = ({ data }) => {
   // const allowedRight = seatX + tooltipWidth < seatmapRect.width;
   const preferredLeft = parentRowRect[keyForPosition] > seatmapParentCenter;
 
-  const negatePositionVertical = Number(rowY > tooltipHeight);
+  const negatePositionVertical = Number(rowSeatY > tooltipHeight);
   const negatePositionHorizontal = Number(allowedLeft) * Number(preferredLeft);
 
   const relativeSeatY = tooltipHeight - seatY;
